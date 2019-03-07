@@ -87,32 +87,34 @@ class Tokenizer:
 		data = [] 
 		pos, neg = 0, 0
 
+		fcontents = self.fcontents
+
 		for fid, token, tpos, tlabel in self.filtered_tokens:
 			# print(fid, token, tpos, len(self.clean_token(self.fcontents)))
 			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
-			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fid))
+			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fcontents))
 			token_vector['isContainPrefix'] = int(isContainPrefix(token))
 			token_vector['isContainSuffix'] = int(isContainSuffix(token))
-			token_vector['isPartial'] = int(isPartial(tpos, fid))
-			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fid, token))
-			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fid, token))
-			token_vector['isLocation'] = int(isLocation(tpos, fid))
-			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fid))
-			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fid))
+			token_vector['isPartial'] = int(isPartial(tpos, fcontents))
+			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
+			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
+			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
+			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fcontents))
+			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fcontents))
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
-			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fid))
-			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fid))
-			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fid))
-			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fid))
-			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fid))
-			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fid))
-			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fid))
+			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
+			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
+			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
+			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fcontents))
+			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fcontents))
+			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fcontents))
+			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fcontents))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
-
+			print(token_vector)
 			data.append(token_vector)
 
 		return data, pos, neg
@@ -130,13 +132,12 @@ class Tokenizer:
 # 	else:
 # 		fname = str(i)
 
+# 	print(fname)
 # 	F = Tokenizer("labelled/" + fname + ".txt")
 # 	F.tokenize()
 # 	F.filter_tokens()
 
-
-# 	# F.filter_tokens()
-# 	# F.print_tokens()
+# 	F.print_tokens()
 
 
 # 	d, p, n = F.vectorize()
