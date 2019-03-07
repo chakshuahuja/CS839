@@ -1,9 +1,10 @@
 import re
 
 pronouns = ["I", "you", "he", "she", "we", "they", "me", "you", "him", "her", "us", "them", "mine", "yours", "his", "hers", "ours", "theirs", "myself", "yourself", "yourselves", "himself", "herself", "ourselves", "themselves", "who", "whom", "whose"]
-familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person", "boy", "girl", "man", "woman"]
+familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person", "boy", "girl", "man", "woman", "partner"]
 statementWords = ["say", "said", "told", "state", "comment", "replied", "added", "laugh", "joke", "assure", "adds", "tell", "direct", "explain", "mention", "answer", "respond", "speak", "declare", "announce", "remark", "note", "claim", "maintain", "assert", "allege", "affirm", "reveal", "affirm", "express", "convey", "disclose", "suggest"]
-nonPersonEntityTypes = ["book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
+nonPersonEntityTypes = ["comedy", "thriller", "drama", "award", "program", "book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
+occupationWords = ["executive", "officer", "scientist","contestant", "cricketer", "assistant", "manager", "player", "dancer", "butler", "owner", "name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "presenter", "cowriter", "cast", "featuring", "introducing", "starring", "late", "legend", "DJ", "creator", "editor", "critic", "contender"]
 
 def removeSpecialCharacter(word):
 	cleanString = "";
@@ -130,7 +131,7 @@ def hasFullNameOccurence(offset, document, word):
 def isLocation(offset, document):
 	wordThreshold = 3
 	text = getDocumentContent(document);
-	locationDict = ["in", "on", "at", "near"]
+	locationDict = ["in", "on", "at", "near", "around", "of"]
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
 		word = word.lower()
@@ -143,7 +144,7 @@ def isLocation(offset, document):
 
 def isPrecededByWords(offset, document):
 	text = getDocumentContent(document);
-	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring", "late", "legend"]
+	array = occupationWords
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
@@ -160,7 +161,7 @@ def isPrecededByWords(offset, document):
 
 def isSucceededByWords(offset, document):
 	text = getDocumentContent(document);
-	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring", "late", "legend"]
+	array = occupationWords
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
