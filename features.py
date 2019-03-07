@@ -23,11 +23,10 @@ def getDocumentContent(document):
 	file = open(filename,"r")
 	return file.read();
 
-def isStartOfSentence(offset, document):
+def isStartOfSentence(offset, text):
 	if(offset == 0):
 		return True;
 	else:
-		text = getDocumentContent(document)
 		while offset >= 0:
 			offset = offset - 1;
 			if text[offset].isalnum():
@@ -86,9 +85,7 @@ def getNextWord(offset, text):
 	
 	return nextWord, nextWordOffset - len(nextWord)
 
-def isPartial(offset, document, word):
-	text = getDocumentContent(document)
-	
+def isPartial(offset, text, word):
 	previousWord, previousOffset = getPreviousWord(offset, text)
 	offset = offset + len(word)
 	nextWord, nextOffset = getNextWord(offset, text)
@@ -98,8 +95,7 @@ def isPartial(offset, document, word):
 		
 	return allWordsCapitalized(previousWord) or allWordsCapitalized(nextWord)
 
-def hasPartialNameOccurence(offset, document, word):
-	text = getDocumentContent(document)
+def hasPartialNameOccurence(offset, text, word):
 	splits = word.split(" ");
 	if(len(splits) == 1):
 		return False
@@ -111,11 +107,10 @@ def hasPartialNameOccurence(offset, document, word):
 			return True
 	return False
 
-def hasFullNameOccurence(offset, document, word):
+def hasFullNameOccurence(offset, text, word):
 	splits = word.split(" ");
 	if(len(splits) > 1):
 		return False;
-	text = getDocumentContent(document)
 	word = removeApostrophS(word)
 	word = removeSpecialCharacter(word)
 	occurences = [i for i in range(len(text)) if text.startswith(word, i)]
@@ -130,9 +125,8 @@ def hasFullNameOccurence(offset, document, word):
 				return True
 	return False
 
-def isLocation(offset, document):
+def isLocation(offset, text):
 	wordThreshold = 3
-	text = getDocumentContent(document);
 	locationDict = ["in", "on", "at", "near", "around", "of"]
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
@@ -144,8 +138,7 @@ def isLocation(offset, document):
 			break;
 	return False
 
-def isPrecededByWords(offset, document):
-	text = getDocumentContent(document);
+def isPrecededByWords(offset, text):
 	array = occupationWords
 	wordThreshold = 3
 	for i in range(wordThreshold):
@@ -161,8 +154,7 @@ def isPrecededByWords(offset, document):
 			break;
 	return False
 
-def isSucceededByWords(offset, document, word):
-	text = getDocumentContent(document);
+def isSucceededByWords(offset, text, word):
 	array = occupationWords
 	wordThreshold = 3
 	offset = offset + len(word)
@@ -201,8 +193,7 @@ def endsWithApostropheS(candidateWord):
 def endsWithComma(candidateWord):
 	return candidateWord.strip().endswith(",")
 
-def lineContainsPronoun(offset, fileName):
-	content = getDocumentContent(fileName)
+def lineContainsPronoun(offset, content):
 	
 	lineStartIndex = offset
 	while(lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
@@ -224,9 +215,8 @@ def lineContainsPronoun(offset, fileName):
 	return False
 		
 
-def nextLineContainsPronoun(offset, fileName):
-	content = getDocumentContent(fileName)
-	
+def nextLineContainsPronoun(offset, content):
+
 	lineStartIndex = offset
 	while(lineStartIndex < len(content) - 1 and content[lineStartIndex] not in ['\n', '.']):
 		lineStartIndex = lineStartIndex + 1
@@ -251,9 +241,7 @@ def nextLineContainsPronoun(offset, fileName):
 	return False
 		
 
-def isPreceededByFamilyRelation(offset, fileName):
-	content = getDocumentContent(fileName)
-	
+def isPreceededByFamilyRelation(offset, content):
 	lineStartIndex = offset - 1
 
 	while(lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
@@ -271,9 +259,7 @@ def isPreceededByFamilyRelation(offset, fileName):
 
 	return False
 
-def isFollowedByFamilyRelation(offset, fileName):
-	content = getDocumentContent(fileName)
-	
+def isFollowedByFamilyRelation(offset, content):
 	lineEndIndex = offset + 1
 
 	while(lineEndIndex < len(content) - 1 and content[lineEndIndex] not in ['\n', '.']):
@@ -290,8 +276,7 @@ def isFollowedByFamilyRelation(offset, fileName):
 
 	return False
 
-def isNearStatementWord(offset, fileName):
-	content = getDocumentContent(fileName)
+def isNearStatementWord(offset, content):
 
 	lineStartIndex = offset
 	numSpaces = 0
@@ -321,8 +306,7 @@ def isNearStatementWord(offset, fileName):
 
 	return False
 
-def isPreceededByNonPersonEntity(offset, fileName):
-	content = getDocumentContent(fileName)
+def isPreceededByNonPersonEntity(offset, content):
 
 	lineStartIndex = offset
 	numSpaces = 0
@@ -343,8 +327,7 @@ def isPreceededByNonPersonEntity(offset, fileName):
 
 	return False
 
-def isFollowedByNonPersonEntity(offset, fileName):
-	content = getDocumentContent(fileName)
+def isFollowedByNonPersonEntity(offset, content):
 
 	lineEndIndex = offset + 1
 	numSpaces = 0
