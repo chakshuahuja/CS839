@@ -132,7 +132,7 @@ def hasFullNameOccurence(offset, document, word):
 def isLocation(offset, document):
 	wordThreshold = 3
 	text = getDocumentContent(document);
-	locationDict = ["in", "on", "at", "near", "around", "of"]
+	locationDict = ["in", "on", "at", "near", "around"]
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
 		word = word.lower()
