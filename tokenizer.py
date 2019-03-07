@@ -1,6 +1,7 @@
 from itertools import accumulate
 import re
 from features import *
+import pandas as pd
 
 class Tokenizer:
 
@@ -93,12 +94,12 @@ class Tokenizer:
 			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fid))
 			token_vector['isContainPrefix'] = int(isContainPrefix(token))
 			token_vector['isContainSuffix'] = int(isContainSuffix(token))
-			token_vector['isPartial'] = int(isPartial(tpos, fid))
+			token_vector['isPartial'] = int(isPartial(tpos, fid, token))
 			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fid, token))
 			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fid, token))
 			token_vector['isLocation'] = int(isLocation(tpos, fid))
 			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fid))
-			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fid))
+			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fid, token))
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))

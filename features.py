@@ -61,7 +61,7 @@ def getPreviousWord(offset, text):
 	previousWord = ""
 	if text[previousWordOffset] == " ":
 		previousWordOffset = previousWordOffset - 1;
-		while text[previousWordOffset] != " " and text[previousWordOffset] != ".":
+		while text[previousWordOffset] != " " and text[previousWordOffset] != "." and text[previousWordOffset] != "\n":
 			previousWord = text[previousWordOffset] + previousWord
 			previousWordOffset = previousWordOffset - 1;
 	else:
@@ -72,11 +72,11 @@ def getNextWord(offset, text):
 	nextWordOffset = offset
 	nextWord = ""
 	length = len(text)
-	while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+	while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " " and text[nextWordOffset] != "\n":
 		nextWordOffset = nextWordOffset + 1;
 	if nextWordOffset < length and text[nextWordOffset] == " ":
 		nextWordOffset = nextWordOffset + 1;
-		while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+		while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " " and text[nextWordOffset] != "\n":
 			nextWord = nextWord + text[nextWordOffset]
 			nextWordOffset = nextWordOffset + 1
 	else:
@@ -86,10 +86,11 @@ def getNextWord(offset, text):
 	
 	return nextWord, nextWordOffset - len(nextWord)
 
-def isPartial(offset, document):
+def isPartial(offset, document, word):
 	text = getDocumentContent(document)
 	
 	previousWord, previousOffset = getPreviousWord(offset, text)
+	offset = offset + len(word)
 	nextWord, nextOffset = getNextWord(offset, text)
 
 	previousWord = removeSpecialCharacter(previousWord)
@@ -160,10 +161,11 @@ def isPrecededByWords(offset, document):
 			break;
 	return False
 
-def isSucceededByWords(offset, document):
+def isSucceededByWords(offset, document, word):
 	text = getDocumentContent(document);
 	array = occupationWords
 	wordThreshold = 3
+	offset = offset + len(word)
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
 		word = word.lower()
@@ -363,64 +365,10 @@ def isFollowedByNonPersonEntity(offset, fileName):
 
 	return False
 
-# def getPreviousName(offset, text):
-# 	word = ""
-# 	offset = offset - 1;
-# 	name = ""
-# 	flag = True
-# 	count = 0;
-# 	while flag == True:
-# 		while text[offset] != ",":
-# 			name = text[offset] + name
-# 			# print(name)
-# 			offset = offset - 1;
-# 		name = name.replace(" and", "")
-# 		print(name)
-# 		if allWordsCapitalized(name):
-# 			count = count + 1;
-# 			offset = offset - 1
-# 			name = ""
-# 		else:
-# 			flag = False
-# 	if count > 0:
-# 		return True
-# 	else:
-# 		return False
-
-
-
-# def partOfMultipleNames(offset, document):
-# 	text = getDocumentContent(document);
-# 	print(getPreviousName(offset, text))
-
 
 # def main():
-# 	text = getDocumentContent(104);
-# 	index = text.index("Jools Holland")
-	# print(partOfMultipleNames(index, 104))
-	# print(index)
-	# word = "Martin Scorsese's"
-	# word = removeApostrophS(word);
-	# print(removeSpecialCharacter(word))
-	# isPartial(234, 101)
-	# flag = isStartOfSentence(1574, 101)
-	# print(flag)
-	# flag = isContainSuffix("junior jr")
-	# print(flag)
-	# flag = hasPartialNameOccurence(794, 102, "Martin Scorsese's")
-	# print(flag)
-	# print(allWordsCapitalized("Hello there"));
-	# print(allWordsCapitalized("Hello There"));
-	# print(endsWithApostropheS("Hello"));
-	# print(endsWithApostropheS("Hello's"));
-	# print(endsWithComma("Hey There!"));
-	# print(endsWithComma("Hello There ,   "));
-	# print(lineContainsPronoun(51, 101));
-	# print(nextLineContainsPronoun(51, 101));
-	# print(isPreceededByFamilyRelation(101, 101))
-	# print(isFollowedByFamilyRelation(101, 101))
-	# print(isNearStatementWord(101, 101))
-	# print(isPreceededByNonPersonEntity(101, 101))
-	# print(isFollowedByNonPersonEntity(101, 101))
+# 	text = getDocumentContent("001")
+# 	index = text.index("Christmas")
+# 	# print(isPartial(index, "001", "Christmas"))
 
 # main()
