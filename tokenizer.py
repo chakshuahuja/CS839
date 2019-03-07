@@ -1,5 +1,6 @@
 from itertools import accumulate
 import re
+from features import *
 
 class Tokenizer:
 
@@ -66,14 +67,43 @@ class Tokenizer:
 				curr_start_tag += curr_token.count(Tokenizer.start_tag)
 				curr_end_tag += curr_token.count(Tokenizer.end_tag)
 
-				self.tokens.append((curr_token, curr_location, curr_label))
+				self.tokens.append((self.fidentifier, curr_token, curr_location, curr_label))
 
 		return self.tokens
 
 	def print_tokens(self):
-		for t, tp, l in self.tokens:
-			print("{f_id} {label} {token} {token_position}".format(f_id=self.fidentifier, token=t, token_position=tp, label=l))
+		for fid, t, tp, l in self.tokens:
+			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
-F = Tokenizer("/Users/chakshu/CSMadison839/002.txt")
+	def vectorize(self):
+		data = [] 
+
+		for fid, token, tpos, tlabel in self.tokens:
+			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
+			token_vector['isStartOfSentence'] = isStartOfSentence(tpos, fid)
+			token_vector['isContainPrefix'] = isContainPrefix(token)
+			token_vector['isContainSuffix'] = isContainSuffix(token)
+			token_vector['isPartial'] = isPartial(tpos, fid)
+			token_vector['hasPartialNameOccurence'] = hasPartialNameOccurence(tpos, fid, token)
+			token_vector['hasFullNameOccurence'] = hasFullNameOccurence(tpos, fid, token)
+			token_vector['isLocation'] = isLocation(tpos, fid)
+			token_vector['isPrecededByWords'] = isPrecededByWords(tpos, fid)
+			token_vector['isSucceededByWords'] = isSucceededByWords(tpos, fid)
+			token_vector['allWordsCapitalized'] = allWordsCapitalized(token)
+			token_vector['endsWithApostropheS'] = endsWithApostropheS(token)
+			token_vector['endsWithComma'] = endsWithComma(token)
+			token_vector['lineContainsPronoun'] = lineContainsPronoun(tpos, fid)
+			token_vector['nextLineContainsPronoun'] = nextLineContainsPronoun(tpos, fid)
+			token_vector['isPreceededByFamilyRelation'] = isPreceededByFamilyRelation(tpos, fid)
+			token_vector['isFollowedByFamilyRelation'] = isFollowedByFamilyRelation(tpos, fid)
+			token_vector['isNearStatementWord'] = isNearStatementWord(tpos, fid)
+			token_vector['isPreceededByNonPersonEntity'] = isPreceededByNonPersonEntity(tpos, fid)
+			token_vector['isFollowedByNonPersonEntity'] = isFollowedByNonPersonEntity(tpos, fid)
+
+			data.append(token_vector)
+		return data
+
+F = Tokenizer("labelled/001.txt")
 F.tokenize()
 F.print_tokens()
+print(F.vectorize())

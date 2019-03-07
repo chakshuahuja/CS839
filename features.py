@@ -143,7 +143,7 @@ def isLocation(offset, document):
 
 def isPrecededByWords(offset, document):
 	text = getDocumentContent(document);
-	array = ["model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judges", "soap", "comedian ", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring"]
+	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judges", "soap", "comedian ", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring"]
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
@@ -198,8 +198,7 @@ def endsWithComma(candidateWord):
 	return candidateWord.strip().endswith(",")
 
 def lineContainsPronoun(offset, fileName):
-	with open(str(fileName) + ".txt", 'r') as file:
-    		content = file.read()
+	content = getDocumentContent(fileName)
 	
 	lineStartIndex = offset
 	while(lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
@@ -210,22 +209,19 @@ def lineContainsPronoun(offset, fileName):
 		lineEndIndex = lineEndIndex + 1
 	
 	currentLine = content[lineStartIndex:lineEndIndex + 1]
-	print(currentLine)
 
 	currentLineWords = currentLine.split()
 	for word in currentLineWords:
 		word = word.strip()
 		re.sub(r'\W+', '', word).lower()	
 		if word in pronouns:
-			print("word found " + word)
 			return True
 	
 	return False
 		
 
 def nextLineContainsPronoun(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
+	content = getDocumentContent(fileName)
 	
 	lineStartIndex = offset
 	while(lineStartIndex < len(content) - 1 and content[lineStartIndex] not in ['\n', '.']):
@@ -240,7 +236,6 @@ def nextLineContainsPronoun(offset, fileName):
 	
 	
 	line = content[lineStartIndex:lineEndIndex + 1]
-	print(line)
 
 	words = line.split()
 	for word in words:
@@ -253,8 +248,7 @@ def nextLineContainsPronoun(offset, fileName):
 		
 
 def isPreceededByFamilyRelation(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
+	content = getDocumentContent(fileName)
 	
 	lineStartIndex = offset - 1
 
@@ -263,7 +257,6 @@ def isPreceededByFamilyRelation(offset, fileName):
 	
 	line = content[lineStartIndex:offset + 1]
 
-	print(line)
 
 	words = line.split()
 	for word in words:
@@ -275,8 +268,7 @@ def isPreceededByFamilyRelation(offset, fileName):
 	return False
 
 def isFollowedByFamilyRelation(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
+	content = getDocumentContent(fileName)
 	
 	lineEndIndex = offset + 1
 
@@ -284,8 +276,6 @@ def isFollowedByFamilyRelation(offset, fileName):
 		lineEndIndex = lineEndIndex + 1
 	
 	line = content[offset:lineEndIndex + 1]
-
-	print(line)
 
 	words = line.split()
 	for word in words:
@@ -297,8 +287,7 @@ def isFollowedByFamilyRelation(offset, fileName):
 	return False
 
 def isNearStatementWord(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
+	content = getDocumentContent(fileName)
 
 	lineStartIndex = offset
 	numSpaces = 0
@@ -318,8 +307,6 @@ def isNearStatementWord(offset, fileName):
 			numSpaces = numSpaces + 1
 
 	line = content[lineStartIndex:lineEndIndex + 1]
-	
-	print(line)
 
 	words = line.split()
 	for word in words:
@@ -331,8 +318,7 @@ def isNearStatementWord(offset, fileName):
 	return False
 
 def isPreceededByNonPersonEntity(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
+	content = getDocumentContent(fileName)
 
 	lineStartIndex = offset
 	numSpaces = 0
@@ -344,8 +330,6 @@ def isPreceededByNonPersonEntity(offset, fileName):
 
 	line = content[lineStartIndex:offset + 1]
 
-	print(line)
-
 	words = line.split()
 	for word in words:
 		word = word.strip().lower()
@@ -356,9 +340,8 @@ def isPreceededByNonPersonEntity(offset, fileName):
 	return False
 
 def isFollowedByNonPersonEntity(offset, fileName):
-	with open(str(fileName) + '.txt', 'r') as file:
-		content = file.read()
-	
+	content = getDocumentContent(fileName)
+
 	lineEndIndex = offset + 1
 	numSpaces = 0
 	
@@ -368,8 +351,6 @@ def isFollowedByNonPersonEntity(offset, fileName):
 			numSpaces = numSpaces + 1
 	
 	line = content[offset:lineEndIndex + 1]
-
-	print(line)
 
 	words = line.split()
 	for word in words:
@@ -411,9 +392,9 @@ def isFollowedByNonPersonEntity(offset, fileName):
 # 	print(getPreviousName(offset, text))
 
 
-def main():
-	text = getDocumentContent(104);
-	index = text.index("Jools Holland")
+# def main():
+# 	text = getDocumentContent(104);
+# 	index = text.index("Jools Holland")
 	# print(partOfMultipleNames(index, 104))
 	# print(index)
 	# word = "Martin Scorsese's"
@@ -440,4 +421,4 @@ def main():
 	# print(isPreceededByNonPersonEntity(101, 101))
 	# print(isFollowedByNonPersonEntity(101, 101))
 
-main()
+# main()
