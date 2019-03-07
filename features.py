@@ -1,9 +1,9 @@
 import re
 
 pronouns = ["I", "you", "he", "she", "we", "they", "me", "you", "him", "her", "us", "them", "mine", "yours", "his", "hers", "ours", "theirs", "myself", "yourself", "yourselves", "himself", "herself", "ourselves", "themselves", "who", "whom", "whose"]
-familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person"]
-statementWords = ["said", "told", "state", "comment", "replied", "added", "laugh", "joke", "assure", "adds", "tell", "direct", "explain", "mention", "answer", "respond", "speak", "declare", "announce", "remark", "note", "claim", "maintain", "assert", "allege", "affirm", "reveal", "affirm", "express", "convey", "disclose", "suggest"]
-nonPersonEntityTypes = ["song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
+familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person", "boy", "girl", "man", "woman"]
+statementWords = ["say", "said", "told", "state", "comment", "replied", "added", "laugh", "joke", "assure", "adds", "tell", "direct", "explain", "mention", "answer", "respond", "speak", "declare", "announce", "remark", "note", "claim", "maintain", "assert", "allege", "affirm", "reveal", "affirm", "express", "convey", "disclose", "suggest"]
+nonPersonEntityTypes = ["book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
 
 def removeSpecialCharacter(word):
 	cleanString = "";
@@ -143,7 +143,7 @@ def isLocation(offset, document):
 
 def isPrecededByWords(offset, document):
 	text = getDocumentContent(document);
-	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judges", "soap", "comedian ", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring"]
+	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring", "late", "legend"]
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
@@ -160,7 +160,7 @@ def isPrecededByWords(offset, document):
 
 def isSucceededByWords(offset, document):
 	text = getDocumentContent(document);
-	array = ["model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judges", "soap", "comedian ", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring"]
+	array = ["name", "model", "actor", "actress", "singer", "musician", "star", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "cowriter", "featuring", "introducing", "starring", "late", "legend"]
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
@@ -227,7 +227,7 @@ def nextLineContainsPronoun(offset, fileName):
 	while(lineStartIndex < len(content) - 1 and content[lineStartIndex] not in ['\n', '.']):
 		lineStartIndex = lineStartIndex + 1
 	
-	while(not content[lineStartIndex].isalpha()):
+	while(lineStartIndex < len(content) - 1 and not content[lineStartIndex].isalpha()):
 		lineStartIndex = lineStartIndex + 1
 
 	lineEndIndex = lineStartIndex + 1
