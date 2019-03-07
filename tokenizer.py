@@ -33,7 +33,7 @@ class Tokenizer:
 		return token.replace(Tokenizer.start_tag, '').replace(Tokenizer.end_tag, '')
 
 	def get_offset(self, start_tag_count, end_tag_count):
-		return len(Tokenizer.start_tag) * start_tag_count - len(Tokenizer.end_tag) * end_tag_count
+		return len(Tokenizer.start_tag) * start_tag_count + len(Tokenizer.end_tag) * end_tag_count
 
 	def tokenize(self, maximum_len=4):
 
@@ -57,15 +57,15 @@ class Tokenizer:
 				if tid + curr_len > len(unitokens):
 					break
 				curr_token_location_pair = unitokens[tid:tid+curr_len]
-
 				curr_unprocessed_token = ' '.join([t[0] for t in curr_token_location_pair])
+
 				curr_token = self.clean_token(curr_unprocessed_token)
 				curr_location = curr_token_location_pair[0][1] - self.get_offset(curr_start_tag, curr_end_tag)
 
 				curr_label = self.get_label(curr_unprocessed_token)
 
-				curr_start_tag += curr_token.count(Tokenizer.start_tag)
-				curr_end_tag += curr_token.count(Tokenizer.end_tag)
+				curr_start_tag += curr_unprocessed_token.count(Tokenizer.start_tag)
+				curr_end_tag += curr_unprocessed_token.count(Tokenizer.end_tag)
 
 				self.tokens.append((self.fidentifier, curr_token, curr_location, curr_label))
 
@@ -79,6 +79,7 @@ class Tokenizer:
 		data = [] 
 
 		for fid, token, tpos, tlabel in self.tokens:
+
 			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
 			token_vector['isStartOfSentence'] = isStartOfSentence(tpos, fid)
 			token_vector['isContainPrefix'] = isContainPrefix(token)
@@ -103,7 +104,7 @@ class Tokenizer:
 			data.append(token_vector)
 		return data
 
-F = Tokenizer("labelled/001.txt")
+F = Tokenizer("labelled/000.txt")
 F.tokenize()
 F.print_tokens()
 print(F.vectorize())
