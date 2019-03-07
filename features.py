@@ -35,7 +35,7 @@ def isStartOfSentence(offset, document):
 				continue;
 			elif text[offset] == ".":
 				return True;
-
+	return False
 
 def isContainPrefix(word):
 	listOfPrefixes = ["President", "DJ", "Captain", "Adm", "Atty", "Brother", "Capt", "Chief", "Cmdr", "Col", "Dean", "Dr", "Elder", "Father", "Gen", "Gov", "Hon", "Lt Col", "Maj", "MSgt", "Mr", "Mrs", "Ms", "Prince", "Prof", "Rabbi", "Rev", "Sister", "Sir", "Queen"]
@@ -70,11 +70,12 @@ def getPreviousWord(offset, text):
 def getNextWord(offset, text):
 	nextWordOffset = offset
 	nextWord = ""
-	while text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+	length = len(text)
+	while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
 		nextWordOffset = nextWordOffset + 1;
-	if text[nextWordOffset] == " ":
+	if nextWordOffset < length and text[nextWordOffset] == " ":
 		nextWordOffset = nextWordOffset + 1;
-		while text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+		while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
 			nextWord = nextWord + text[nextWordOffset]
 			nextWordOffset = nextWordOffset + 1
 	else:
