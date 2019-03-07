@@ -2,9 +2,6 @@ from itertools import accumulate
 import re
 from features import *
 import pandas as pd
-from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import precision_recall_fscore_support
 
 class Tokenizer:
 
@@ -91,32 +88,34 @@ class Tokenizer:
 		data = [] 
 		pos, neg = 0, 0
 
+		fcontents = self.fcontents
+
 		for fid, token, tpos, tlabel in self.filtered_tokens:
 			# print(fid, token, tpos, len(self.clean_token(self.fcontents)))
 			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
-			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fid))
+			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fcontents))
 			token_vector['isContainPrefix'] = int(isContainPrefix(token))
 			token_vector['isContainSuffix'] = int(isContainSuffix(token))
-			token_vector['isPartial'] = int(isPartial(tpos, fid))
-			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fid, token))
-			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fid, token))
-			token_vector['isLocation'] = int(isLocation(tpos, fid))
-			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fid))
-			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fid))
+			token_vector['isPartial'] = int(isPartial(tpos, fcontents, token))
+			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
+			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
+			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
+			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fcontents))
+			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fcontents, token))
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
-			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fid))
-			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fid))
-			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fid))
-			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fid))
-			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fid))
-			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fid))
-			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fid))
+			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
+			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
+			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
+			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fcontents))
+			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fcontents))
+			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fcontents))
+			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fcontents))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
-
+			print(token_vector)
 			data.append(token_vector)
 
 		return data, pos, neg
@@ -134,13 +133,12 @@ class Tokenizer:
 # 	else:
 # 		fname = str(i)
 
+# 	print(fname)
 # 	F = Tokenizer("labelled/" + fname + ".txt")
 # 	F.tokenize()
 # 	F.filter_tokens()
 
-
-# 	# F.filter_tokens()
-# 	# F.print_tokens()
+# 	F.print_tokens()
 
 
 # 	d, p, n = F.vectorize()
@@ -152,23 +150,3 @@ class Tokenizer:
 # print(len(all_data), all_pos, all_neg)
 # df = pd.DataFrame(all_data)
 # df.to_csv("data.csv")
-
-input_data = pd.read_csv("data.csv")
-X = input_data.drop(['position', 'token', 'fid', 'label', 'Unnamed: 0'], axis=1)
-y = input_data[['label']]
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=42)
-clf = MLPClassifier(solver='lbfgs', verbose=True, alpha=1e-5, hidden_layer_sizes=(15,), random_state=1)
-
-
-clf.fit(X_train, y_train)    
-y_pred = clf.predict(X_test)
-# y_test = y_test.values
-# print(type(y_pred))
-# print(type(y_test.as_matrix()))
-# for i in range(len(y_pred)):
-	# print(y_pred[i], y_test[i][0])
-
-print(precision_recall_fscore_support(y_test, y_pred, average='macro'))
-# print(len(X_train), len(X_test), len(X))
-# print(len(y_train), len(y_test), len(y))
