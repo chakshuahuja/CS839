@@ -7,7 +7,7 @@ import pandas as pd
 class Token:
     def __repr__(self):
         return "Tok<{string}, {pos}, {raw_pos}>".format(
-            string=self.string.replace(UnigramIterator.START_TAG, "").replace(UnigramIterator.END_TAG, ""), pos=self.labelled_pos, raw_pos=self.raw_pos
+            string=Tokenizer.clean(self.string), pos=self.labelled_pos, raw_pos=self.raw_pos
         )
 
     def __init__(self, string, pos, raw_pos):
@@ -76,9 +76,7 @@ class NgramIterator():
 
 def test(s):
     tokens = NgramIterator(s, 2)
-    replaced_s = \
-      s.replace(UnigramIterator.START_TAG, "").replace(UnigramIterator.END_TAG, "")
-    raw_tokens = NgramIterator(replaced_s, 2)
+    raw_tokens = NgramIterator(Tokenizer.clean(s), 2)
     for t,rt in zip(tokens, raw_tokens):
         if t.raw_pos != rt.labelled_pos:
             print("INVALID", t, rt)
@@ -86,9 +84,6 @@ def test(s):
     return True
 
 class Tokenizer:
-
-	start_tag = "<b>"
-	end_tag = "</b>"
 
 	def __init__(self, fname):
 
@@ -104,21 +99,21 @@ class Tokenizer:
 			
 	def get_label(self, word):
 		# Returns label 0 (Not an entity) or 1 (Is an entity) -- <b>Elon Musk</b>
-		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.+?)" + Tokenizer.end_tag + "(.*)", word)
+		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.+?)" + UnigramIterator.END_TAG + "(.*)", word)
 		if entity_word:
 			if re.findall(r"\w+", entity_word.groups()[0]) or re.findall(r"\w+", entity_word.groups()[-1]):
 				return 0
 			return 1
 
 		# -- <b>Elon
-		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.*)", word)
+		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.*)", word)
 		if entity_word:
 			if re.findall(r"\w+", entity_word.groups()[0]):
 				return 0
 			return 1
 
 		# -- Musk</b>
-		entity_word = re.search("(.*)" + Tokenizer.end_tag + "(.*)", word)
+		entity_word = re.search("(.*)" + UnigramIterator.END_TAG + "(.*)", word)
 		if entity_word:
 			if re.findall(r"\w+", entity_word.groups()[-1]):
 				return 0
@@ -126,18 +121,18 @@ class Tokenizer:
 
 		return 0
 
-	def clean_token(self, token):
+	@classmethod
+	def clean(self, token):
 		# Remove the start and end tags
-		return token.replace(Tokenizer.start_tag, '').replace(Tokenizer.end_tag, '')
+		return token.replace(UnigramIterator.START_TAG, '').replace(UnigramIterator.END_TAG, '')
 
 	def tokenize(self, maximum_len=4):
 
 		for curr_len in range(1, maximum_len + 1):
 			word_iterator = NgramIterator(self.fcontents, curr_len)
 			for token in list(word_iterator):
-				print(token)
 				curr_label = self.get_label(token.string)
-				self.tokens.append((self.fidentifier, self.clean_token(token.string), token.raw_pos, curr_label))
+				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
 		return self.tokens
 
@@ -156,10 +151,10 @@ class Tokenizer:
 		data = [] 
 		pos, neg = 0, 0
 
-		fcontents = self.clean_token(self.fcontents)
+		fcontents = self.clean(self.fcontents)
 
 		for fid, token, tpos, tlabel in self.filtered_tokens:
-			# print(fid, token, tpos, len(self.clean_token(self.fcontents)))
+			# print(fid, token, tpos, len(self.clean(self.fcontents)))
 			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
 			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fcontents))
 			token_vector['isContainPrefix'] = int(isContainPrefix(token))
@@ -192,7 +187,7 @@ all_data = []
 all_pos = 0
 all_neg = 0
 
-for i in range(156, 157):
+for i in range(1, 301):
 	fname = ""
 	if i < 10:
 		fname = "00" + str(i)
@@ -205,8 +200,7 @@ for i in range(156, 157):
 	F.tokenize()
 	F.filter_tokens()
 
-	F.print_tokens()
-
+	# F.print_tokens()
 
 	d, p, n = F.vectorize()
 
