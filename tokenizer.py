@@ -88,7 +88,7 @@ class Tokenizer:
 		data = [] 
 		pos, neg = 0, 0
 
-		fcontents = self.fcontents
+		fcontents = self.clean_token(self.fcontents)
 
 		for fid, token, tpos, tlabel in self.filtered_tokens:
 			# print(fid, token, tpos, len(self.clean_token(self.fcontents)))
@@ -131,12 +131,12 @@ for i in range(1, 301):
 		fname = "0" + str(i)
 	else:
 		fname = str(i)
-
+	print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()
 
-	# F.print_tokens()
+	F.print_tokens()
 
 
 	d, p, n = F.vectorize()
@@ -144,6 +144,6 @@ for i in range(1, 301):
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
-
+print(all_data, all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
