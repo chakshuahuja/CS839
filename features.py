@@ -127,7 +127,7 @@ def hasFullNameOccurence(offset, text, word):
 
 def isLocation(offset, text):
 	wordThreshold = 3
-	locationDict = ["in", "on", "at", "near", "around"]
+	locationDict = ["in", "on", "at", "near", "around", "of"]
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
 		word = word.lower()
@@ -138,31 +138,38 @@ def isLocation(offset, text):
 			break;
 	return False
 
-def isPrecededByWords(offset, text):
+def isPrecededByOccupationWords(offset, text):
 	array = occupationWords
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
-		word = word.lower().strip()
+		word = removeSpecialCharacter(word.strip())
+		word = word.lower()
 		if word != "":
-			word = removeSpecialCharacter(word)
+			# ignoring words that start with an upper case and are not the 
+			# first word (though the first word considered here may also not be the actual first word)
+			if word[0].isupper() and i > 1:
+				return (False, -1)
 			for ele in array:
 				ele = ele.lower()
 				if ele in word:
-					return True
+					return (True, i)
 		else:
 			break;
-	return False
+	return (False, -1)
 
-def isSucceededByWords(offset, text, word):
+def isSucceededByOccupationWords(offset, text, word):
 	array = occupationWords
 	wordThreshold = 3
 	offset = offset + len(word)
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
+		word = removeSpecialCharacter(word.strip())
 		word = word.lower()
 		if word != "":
-			word = removeSpecialCharacter(word)
+			# ignoring words that start with caps (what about cases like Chicago Film Festival)
+			if word[0].isupper():
+				return False
 			for ele in array:
 				ele = ele.lower()
 				if ele in word:

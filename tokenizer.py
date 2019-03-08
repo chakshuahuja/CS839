@@ -173,8 +173,9 @@ class Tokenizer:
 			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
 			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
 			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
-			token_vector['isPrecededByWords'] = int(isPrecededByWords(tpos, fcontents))
-			token_vector['isSucceededByWords'] = int(isSucceededByWords(tpos, fcontents, token))
+			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
+			# token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
+			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token))
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
