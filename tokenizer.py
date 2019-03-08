@@ -198,7 +198,7 @@ class Tokenizer:
 			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
 			# token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
-			token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
+			# token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
 			token_vector['numWords'] = int(len(token))
@@ -209,6 +209,7 @@ class Tokenizer:
 			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fcontents))
 			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fcontents))
 			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fcontents))
+			token_vector['containsCommonWord'] = int(containsCommonWord(token))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
