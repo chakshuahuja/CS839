@@ -94,9 +94,9 @@ class Tokenizer:
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	def print_tokens(self):
-		for fid, t, tp, l in self.filtered_tokens:
-			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	# def print_tokens(self):
+	# 	for fid, t, tp, l in self.filtered_tokens:
+	# 		# print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = [] 
@@ -129,6 +129,7 @@ class Tokenizer:
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
+			# print(token_vector)
 			data.append(token_vector)
 
 		return data, pos, neg
@@ -158,6 +159,7 @@ for i in range(1, 301):
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
-print(len(all_data), all_pos, all_neg)
+
+# print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
