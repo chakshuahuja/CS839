@@ -6,14 +6,15 @@ import pandas as pd
 
 class Token:
     def __repr__(self):
-        return "Tok<{string}, {pos}, {raw_pos}>".format(
-            string=Tokenizer.clean(self.string), pos=self.labelled_pos, raw_pos=self.raw_pos
+        return "Tok<{string}, {pos}, {raw_pos} {has_name}>".format(
+            string=Tokenizer.clean(self.string), pos=self.labelled_pos, raw_pos=self.raw_pos, has_name=self.has_name
         )
 
-    def __init__(self, string, pos, raw_pos):
+    def __init__(self, string, pos, raw_pos, has_name):
         self.string = string
         self.labelled_pos = pos
         self.raw_pos = raw_pos
+        self.has_name = has_name
 
 class UnigramIterator:
     START_TAG = "<b>"
@@ -26,6 +27,7 @@ class UnigramIterator:
         self.counter = -1
         self.labelled_cursor = 0
         self.raw_cursor = 0
+        self.has_name = False
 
     def __iter__(self):
         return self
@@ -41,14 +43,23 @@ class UnigramIterator:
 
         curr_word = self.words[self.counter]
         rm_chars = 0
-        if start_tag in curr_word: rm_chars += len(start_tag)
-        if end_tag in curr_word: rm_chars += len(end_tag)
+        has_name = self.has_name
+
+        if start_tag in curr_word:
+        	rm_chars += len(start_tag)
+        	has_name = True
+
+        if end_tag in curr_word:
+        	rm_chars += len(end_tag)
 
         result = Token(
             curr_word,
             self.labelled_cursor + (len(start_tag) if curr_word.startswith(start_tag) else 0),
             self.raw_cursor,
+            has_name
         )
+        # Reset if closing tag encountered
+        self.has_name = has_name if end_tag not in curr_word else False
 
         self.raw_cursor = self.raw_cursor + len(curr_word) + 1 - rm_chars
         self.labelled_cursor = self.labelled_cursor + len(curr_word) + 1
@@ -74,6 +85,7 @@ class NgramIterator():
             ' '.join([t.string for t in curr_tokens]),
             curr_tokens[0].labelled_pos, 
             curr_tokens[0].raw_pos,
+            all([t.has_name for t in curr_tokens])
         )
 
 def test(data):
@@ -141,7 +153,8 @@ class Tokenizer:
 		for curr_len in range(1, maximum_len + 1):
 			word_iterator = NgramIterator(self.fcontents, curr_len)
 			for token in list(word_iterator):
-				curr_label = self.get_label(token.string)
+				# curr_label = self.get_label(token.string)
+				curr_label = token.has_name
 				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
 		return self.tokens
@@ -149,8 +162,15 @@ class Tokenizer:
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
-			if allWordsCapitalized(token) and "the" not in token.lower():
-				self.filtered_tokens.append((fid, token, tpos, tlabel))
+			if allWordsCapitalized(token):
+				specialChar = False
+				for index in range(len(token.split()) - 1): #doesn't seem to have much impact, number of candidates almost remain the same
+					word = token[index].strip()
+					if word.endswith(",") or (word.endswith(".") and len(word) > 2):
+						specialChar = True
+						break
+				if not specialChar:
+					self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
 	# def print_tokens(self):
@@ -158,7 +178,7 @@ class Tokenizer:
 	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
-		data = [] 
+		data = []
 		pos, neg = 0, 0
 
 		fcontents = self.clean(self.fcontents)
@@ -175,8 +195,10 @@ class Tokenizer:
 			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
 			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
 			# token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
-			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token))
+			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
+			# token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
+			token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
 			token_vector['numWords'] = int(len(token))

@@ -155,7 +155,7 @@ def isLocation(offset, text):
 
 def isPrecededByOccupationWords(offset, text):
 	array = occupationWords
-	wordThreshold = 6
+	wordThreshold = 5
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
 		word = removeSpecialCharacter(word.strip())
@@ -164,18 +164,18 @@ def isPrecededByOccupationWords(offset, text):
 			# ignoring words that start with an upper case and are not the 
 			# first word (though the first word considered here may also not be the actual first word)
 			if word[0].isupper() and i > 1:
-				return (False, -1)
+				return (False, -1 * wordThreshold)
 			for ele in array:
 				ele = ele.lower()
 				if ele in word:
 					return (True, i)
 		else:
 			break;
-	return (False, -1)
+	return (False, -1 * wordThreshold)
 
 def isSucceededByOccupationWords(offset, text, word):
 	array = occupationWords
-	wordThreshold = 6
+	wordThreshold = 5
 	offset = offset + len(word)
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
@@ -184,14 +184,15 @@ def isSucceededByOccupationWords(offset, text, word):
 		if word != "":
 			# ignoring words that start with caps (what about cases like Chicago Film Festival)
 			if word[0].isupper():
-				return False
+				return (False, -1 * wordThreshold)
 			for ele in array:
 				ele = ele.lower()
 				if ele in word:
-					return True
+					return (True, i)
 		else:
 			break;
-	return False
+	return (False, -1 * wordThreshold)
+
 
 def allWordsCapitalized(candidateWord):
 	if len(candidateWord) <= 0:
