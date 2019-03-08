@@ -53,6 +53,8 @@ class UnigramIterator:
         self.raw_cursor = self.raw_cursor + len(curr_word) + 1 - rm_chars
         self.labelled_cursor = self.labelled_cursor + len(curr_word) + 1
 
+        if result.string == "": return next(self)
+
         return result
 
 class NgramIterator():
@@ -74,14 +76,22 @@ class NgramIterator():
             curr_tokens[0].raw_pos,
         )
 
-def test(s):
-    tokens = NgramIterator(s, 2)
-    raw_tokens = NgramIterator(Tokenizer.clean(s), 2)
-    for t,rt in zip(tokens, raw_tokens):
-        if t.raw_pos != rt.labelled_pos:
-            # print("INVALID", t, rt)
-            return False
-    return True
+def test(data):
+	for i, token_vector in enumerate(data):
+
+		text = getDocumentContent(token_vector['fid'])
+		vector_val = token_vector['isStartOfSentence']
+		all_indices = [m.start() for m in re.finditer(token_vector['token'], text)]
+		if token_vector['position'] in all_indices:
+			feature_val = int(isStartOfSentence(token_vector['position'], text))
+		else:
+			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices)
+
+		if vector_val != feature_val:
+			print(token_vector['token'], vector_val, feature_val, token_vector['position'])
+			return False
+
+	return True
 
 class Tokenizer:
 
