@@ -79,7 +79,7 @@ def test(s):
     raw_tokens = NgramIterator(Tokenizer.clean(s), 2)
     for t,rt in zip(tokens, raw_tokens):
         if t.raw_pos != rt.labelled_pos:
-            print("INVALID", t, rt)
+            # print("INVALID", t, rt)
             return False
     return True
 
@@ -143,9 +143,9 @@ class Tokenizer:
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	def print_tokens(self):
-		for fid, t, tp, l in self.filtered_tokens:
-			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	# def print_tokens(self):
+	# 	for fid, t, tp, l in self.filtered_tokens:
+	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = [] 
@@ -168,6 +168,7 @@ class Tokenizer:
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
+			token_vector['numWords'] = int(len(token))
 			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
 			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
 			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
@@ -195,7 +196,7 @@ for i in range(1, 301):
 		fname = "0" + str(i)
 	else:
 		fname = str(i)
-	print(fname)
+	# print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()
@@ -208,6 +209,6 @@ for i in range(1, 301):
 	all_pos += p
 	all_neg += n
 
-print(len(all_data), all_pos, all_neg)
+# print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")

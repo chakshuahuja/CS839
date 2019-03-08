@@ -3,8 +3,8 @@ import re
 pronouns = ["I", "you", "he", "she", "we", "they", "me", "you", "him", "her", "us", "them", "mine", "yours", "his", "hers", "ours", "theirs", "myself", "yourself", "yourselves", "himself", "herself", "ourselves", "themselves", "who", "whom", "whose"]
 familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person", "boy", "girl", "man", "woman", "partner"]
 statementWords = ["say", "said", "told", "state", "comment", "replied", "added", "laugh", "joke", "assure", "adds", "tell", "direct", "explain", "mention", "answer", "respond", "speak", "declare", "announce", "remark", "note", "claim", "maintain", "assert", "allege", "affirm", "reveal", "affirm", "express", "convey", "disclose", "suggest"]
-nonPersonEntityTypes = ["comedy", "thriller", "drama", "award", "program", "book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
-occupationWords = ["director", "executive", "family", "publicist", "guest","icon", "officer", "scientist","contestant", "controller", "cricketer", "assistant", "manager", "player", "dancer", "butler", "owner", "name", "model", "actor", "actress", "singer", "musician", "star", "host", "chair", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "presenter", "cowriter", "cast", "featuring", "introducing", "starring", "late", "legend", "DJ", "creator", "editor", "critic", "contender"]
+nonPersonEntityTypes = ["comedy", "thriller", "drama", "award", "program", "book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county", "weekly", "magazine"]
+occupationWords = ["student", "teacher", "director", "executive", "family", "publicist", "guest","icon", "officer", "scientist","contestant", "controller", "cricketer", "assistant", "manager", "player", "dancer", "butler", "owner", "name", "model", "actor", "actress", "singer", "musician", "star", "host", "chair", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "presenter", "cowriter", "cast", "featuring", "introducing", "starring", "late", "legend", "DJ", "creator", "editor", "critic", "contender"]
 
 def removeSpecialCharacter(word):
 	cleanString = "";
@@ -186,8 +186,8 @@ def endsWithApostropheS(candidateWord):
 	words = candidateWord.split()
 	if len(words) > 0:
 		lastWord = (words[len(words) - 1]).strip()
-		return lastWord.endswith("'s")
-	return False	
+		return lastWord.endswith("'s") or lastWord.endswith("s'")
+	return False
 
 
 def endsWithComma(candidateWord):
