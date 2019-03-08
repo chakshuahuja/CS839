@@ -18,7 +18,7 @@ y = input_data[['label']]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 #Neural Net
-clf = MLPClassifier(solver='lbfgs', activation='logistic', alpha=0.0001, hidden_layer_sizes=(15), random_state=42)
+clf = MLPClassifier(solver='lbfgs', activation='tanh', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42)
 # print(type(X_train))
 
 X_input_train = X_train.drop(['position', 'token', 'fid'], axis=1)

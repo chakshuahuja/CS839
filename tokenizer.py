@@ -164,9 +164,11 @@ class Tokenizer:
 		for fid, token, tpos, tlabel in self.tokens:
 			if allWordsCapitalized(token):
 				specialChar = False
-				for index in range(len(token.split()) - 1): #doesn't seem to have much impact, number of candidates almost remain the same
-					word = token[index].strip()
-					if word.endswith(",") or (word.endswith(".") and len(word) > 2):
+				words = token.split()
+				for index in range(len(words) - 1):
+					word = words[index].strip()
+					if word.endswith(",") or word.endswith("!") or word.endswith("."):
+						# print(token)
 						specialChar = True
 						break
 				if not specialChar:
@@ -194,14 +196,14 @@ class Tokenizer:
 			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
 			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
 			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
-			# token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
+			token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
 			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
-			# token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
+			token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			# token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
-			token_vector['numWords'] = int(len(token))
+			token_vector['numWords'] = int(len(token.split()))
 			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
 			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
 			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
