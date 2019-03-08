@@ -21,10 +21,24 @@ class Tokenizer:
 			self.fcontents = f.read()
 			
 	def get_label(self, word):
-		# Returns label 0 (Not an entity) or 1 (Is an entity)
+		# Returns label 0 (Not an entity) or 1 (Is an entity) -- <b>Elon Musk</b>
 		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.+?)" + Tokenizer.end_tag + "(.*)", word)
 		if entity_word:
 			if re.findall(r"\w+", entity_word.groups()[0]) or re.findall(r"\w+", entity_word.groups()[-1]):
+				return 0
+			return 1
+
+		# -- <b>Elon
+		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.*)", word)
+		if entity_word:
+			if re.findall(r"\w+", entity_word.groups()[0]):
+				return 0
+			return 1
+
+		# -- Musk</b>
+		entity_word = re.search("(.*)" + Tokenizer.end_tag + "(.*)", word)
+		if entity_word:
+			if re.findall(r"\w+", entity_word.groups()[-1]):
 				return 0
 			return 1
 
@@ -80,9 +94,9 @@ class Tokenizer:
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	def print_tokens(self):
-		for fid, t, tp, l in self.filtered_tokens:
-			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	# def print_tokens(self):
+	# 	for fid, t, tp, l in self.filtered_tokens:
+	# 		# print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = [] 
@@ -115,6 +129,7 @@ class Tokenizer:
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
+			# print(token_vector)
 			data.append(token_vector)
 
 		return data, pos, neg
@@ -144,6 +159,7 @@ for i in range(1, 301):
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
-print(len(all_data), all_pos, all_neg)
+
+# print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
