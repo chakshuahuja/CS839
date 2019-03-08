@@ -53,8 +53,8 @@ class UnigramIterator:
         self.raw_cursor = self.raw_cursor + len(curr_word) + 1 - rm_chars
         self.labelled_cursor = self.labelled_cursor + len(curr_word) + 1
 
-        if result.string == "":
-			return next(self)
+        if result.string == "": return next(self)
+
         return result
 
 class NgramIterator():
