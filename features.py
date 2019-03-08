@@ -148,7 +148,7 @@ def isPrecededByWords(offset, text):
 			word = removeSpecialCharacter(word)
 			for ele in array:
 				ele = ele.lower()
-				if ele.startswith(word):
+				if ele in word:
 					return True
 		else:
 			break;
@@ -165,7 +165,7 @@ def isSucceededByWords(offset, text, word):
 			word = removeSpecialCharacter(word)
 			for ele in array:
 				ele = ele.lower()
-				if ele.startswith(word):
+				if ele in word:
 					return True
 		else:
 			break;
@@ -380,14 +380,14 @@ def isFollowedByNonPersonEntity(offset, content):
 
 
 # def main():
-# 	text = getDocumentContent(104);
-# 	index = text.index("Jools Holland")
+# 	text = getDocumentContent(156);
+# 	index = text.index("Lil Jon")
+# 	print(isPartial(index, text, "Lil Jon"))
 	# print(partOfMultipleNames(index, 104))
 	# print(index)
 	# word = "Martin Scorsese's"
 	# word = removeApostrophS(word);
 	# print(removeSpecialCharacter(word))
-	# isPartial(234, 101)
 	# flag = isStartOfSentence(1574, 101)
 	# print(flag)
 	# flag = isContainSuffix("junior jr")

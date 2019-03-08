@@ -76,7 +76,7 @@ class Tokenizer:
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
-			if allWordsCapitalized(token):
+			if allWordsCapitalized(token) and "the" not in token.lower():
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
