@@ -61,7 +61,7 @@ def getPreviousWord(offset, text):
 	previousWord = ""
 	if text[previousWordOffset] == " ":
 		previousWordOffset = previousWordOffset - 1;
-		while text[previousWordOffset] != " " and text[previousWordOffset] != ".":
+		while text[previousWordOffset] != " " and text[previousWordOffset] != "." and text[previousWordOffset] != "\n":
 			previousWord = text[previousWordOffset] + previousWord
 			previousWordOffset = previousWordOffset - 1;
 	else:
@@ -72,11 +72,11 @@ def getNextWord(offset, text):
 	nextWordOffset = offset
 	nextWord = ""
 	length = len(text)
-	while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+	while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " "  and text[nextWordOffset] != "\n":
 		nextWordOffset = nextWordOffset + 1;
 	if nextWordOffset < length and text[nextWordOffset] == " ":
 		nextWordOffset = nextWordOffset + 1;
-		while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " ":
+		while nextWordOffset < length and text[nextWordOffset] != "." and text[nextWordOffset] != " " and text[nextWordOffset] != "\n":
 			nextWord = nextWord + text[nextWordOffset]
 			nextWordOffset = nextWordOffset + 1
 	else:
@@ -86,10 +86,11 @@ def getNextWord(offset, text):
 	
 	return nextWord, nextWordOffset - len(nextWord)
 
-def isPartial(offset, document):
+def isPartial(offset, document, word):
 	text = getDocumentContent(document)
 	
 	previousWord, previousOffset = getPreviousWord(offset, text)
+	offset = offset + len(word)
 	nextWord, nextOffset = getNextWord(offset, text)
 
 	previousWord = removeSpecialCharacter(previousWord)
@@ -160,10 +161,11 @@ def isPrecededByWords(offset, document):
 			break;
 	return False
 
-def isSucceededByWords(offset, document):
+def isSucceededByWords(offset, document, word):
 	text = getDocumentContent(document);
 	array = occupationWords
 	wordThreshold = 3
+	offset = offset + len(word)
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
 		word = word.lower()
