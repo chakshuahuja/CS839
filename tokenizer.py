@@ -120,33 +120,33 @@ class Tokenizer:
 
 		return data, pos, neg
 
-# all_data = []
-# all_pos = 0
-# all_neg = 0
+all_data = []
+all_pos = 0
+all_neg = 0
 
-# for i in range(1, 51):
-# 	fname = ""
-# 	if i < 10:
-# 		fname = "00" + str(i)
-# 	elif i >= 10 and i < 100:
-# 		fname = "0" + str(i)
-# 	else:
-# 		fname = str(i)
+for i in range(1, 2):
+	fname = ""
+	if i < 10:
+		fname = "00" + str(i)
+	elif i >= 10 and i < 100:
+		fname = "0" + str(i)
+	else:
+		fname = str(i)
 
-# 	print(fname)
-# 	F = Tokenizer("labelled/" + fname + ".txt")
-# 	F.tokenize()
-# 	F.filter_tokens()
+	print(fname)
+	F = Tokenizer("labelled/" + fname + ".txt")
+	F.tokenize()
+	F.filter_tokens()
 
-# 	F.print_tokens()
+	F.print_tokens()
 
 
-# 	d, p, n = F.vectorize()
+	d, p, n = F.vectorize()
 
-# 	[all_data.append(v) for v in d]
-# 	all_pos += p
-# 	all_neg += n
+	[all_data.append(v) for v in d]
+	all_pos += p
+	all_neg += n
 
-# print(len(all_data), all_pos, all_neg)
+print(len(all_data), all_pos, all_neg)
 # df = pd.DataFrame(all_data)
 # df.to_csv("data.csv")
