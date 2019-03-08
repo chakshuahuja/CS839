@@ -115,7 +115,6 @@ class Tokenizer:
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
-			print(token_vector)
 			data.append(token_vector)
 
 		return data, pos, neg
@@ -124,7 +123,7 @@ all_data = []
 all_pos = 0
 all_neg = 0
 
-for i in range(1, 2):
+for i in range(1, 301):
 	fname = ""
 	if i < 10:
 		fname = "00" + str(i)
@@ -133,12 +132,11 @@ for i in range(1, 2):
 	else:
 		fname = str(i)
 
-	print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()
 
-	F.print_tokens()
+	# F.print_tokens()
 
 
 	d, p, n = F.vectorize()
@@ -147,6 +145,5 @@ for i in range(1, 2):
 	all_pos += p
 	all_neg += n
 
-print(len(all_data), all_pos, all_neg)
-# df = pd.DataFrame(all_data)
-# df.to_csv("data.csv")
+df = pd.DataFrame(all_data)
+df.to_csv("data.csv")
