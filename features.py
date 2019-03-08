@@ -4,7 +4,7 @@ pronouns = ["I", "you", "he", "she", "we", "they", "me", "you", "him", "her", "u
 familyRelations = ["brother", "sister", "wife", "husband", "friend", "mother", "father", "son", "daughter", "uncle", "aunt", "worker", "neighbor", "neighbour", "sibling", "niece", "nephew", "cousin", "child", "children", "spouse", "mate", "person", "boy", "girl", "man", "woman", "partner"]
 statementWords = ["say", "said", "told", "state", "comment", "replied", "added", "laugh", "joke", "assure", "adds", "tell", "direct", "explain", "mention", "answer", "respond", "speak", "declare", "announce", "remark", "note", "claim", "maintain", "assert", "allege", "affirm", "reveal", "affirm", "express", "convey", "disclose", "suggest"]
 nonPersonEntityTypes = ["comedy", "thriller", "drama", "award", "program", "book", "court", "school", "song", "album", "band", "movie", "film", "show", "orchestra", "location", "company", "novel", "place", "park", "hotel", "group", "country", "festival", "county"]
-occupationWords = ["executive", "publicist", "guest","icon", "officer", "scientist","contestant", "controller", "cricketer", "assistant", "manager", "player", "dancer", "butler", "owner", "name", "model", "actor", "actress", "singer", "musician", "star", "host", "chair", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "presenter", "cowriter", "cast", "featuring", "introducing", "starring", "late", "legend", "DJ", "creator", "editor", "critic", "contender"]
+occupationWords = ["director", "executive", "family", "publicist", "guest","icon", "officer", "scientist","contestant", "controller", "cricketer", "assistant", "manager", "player", "dancer", "butler", "owner", "name", "model", "actor", "actress", "singer", "musician", "star", "host", "chair", "stars", "producer", "judge", "veteran", "hero", "lawyer", "leader", "judges", "soap", "comedian", "writer", "producer", "pianist", "guitarist", "drummer", "rapper", "activist", "presenter", "cowriter", "cast", "featuring", "introducing", "starring", "late", "legend", "DJ", "creator", "editor", "critic", "contender"]
 
 def removeSpecialCharacter(word):
 	cleanString = "";
@@ -143,7 +143,7 @@ def isPrecededByWords(offset, text):
 	wordThreshold = 3
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
-		word = word.lower()
+		word = word.lower().strip()
 		if word != "":
 			word = removeSpecialCharacter(word)
 			for ele in array:
