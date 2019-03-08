@@ -223,3 +223,26 @@ print(isFollowedByFamilyRelation(101, 101))
 print(isNearStatementWord(101, 101))
 print(isPreceededByNonPersonEntity(101, 101))
 print(isFollowedByNonPersonEntity(101, 101))
+
+
+
+# def areMoreEntitiesPresentInSentence(offset, text, candidateWord):
+# 	word, offsetPrev = getPreviousWord(offset, text)
+# 	lowerEncountered = False
+# 	while(word != ""):
+# 		# print(word, candidateWord)
+# 		if not isStartOfSentence(offsetPrev, text) and lowerEncountered == True and word[0].isupper():
+# 			return True
+# 		lowerEncountered = True
+# 		word, offsetPrev = getPreviousWord(offsetPrev, text)
+	
+# 	word, offsetNext = getNextWord(offset + len(candidateWord), text)
+# 	lowerEncountered = False
+# 	while(word != ""):
+# 		print(word, candidateWord)
+# 		if lowerEncountered == True and word[0].isupper():
+# 			return True
+# 		lowerEncountered = True
+# 		word, offsetNext = getNextWord(offset, text)
+	
+# 	return False

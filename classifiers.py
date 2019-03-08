@@ -15,10 +15,10 @@ input_data = pd.read_csv("data.csv")
 X = input_data.drop(['label', 'Unnamed: 0'], axis=1)
 y = input_data[['label']]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 #Neural Net
-clf = MLPClassifier(solver='lbfgs', activation='logistic', alpha=0.0001, hidden_layer_sizes=(15))
+clf = MLPClassifier(solver='lbfgs', activation='logistic', alpha=0.0001, hidden_layer_sizes=(15), random_state=42)
 # print(type(X_train))
 
 X_input_train = X_train.drop(['position', 'token', 'fid'], axis=1)
@@ -49,3 +49,8 @@ print(classification_report(y_test,y_pred))
 X_test['y_true'] = y_test
 X_test['y_pred'] = y_pred
 X_test.to_csv("prediction.csv")
+
+# add feature whether more entities are present in the sentence
+# capitalized and not first word common names
+# distance of each word
+# comma or and separated entities

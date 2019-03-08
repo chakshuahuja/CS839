@@ -162,8 +162,15 @@ class Tokenizer:
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
-			if allWordsCapitalized(token) and "the" not in token.lower():
-				self.filtered_tokens.append((fid, token, tpos, tlabel))
+			if allWordsCapitalized(token):
+				specialChar = False
+				for index in range(len(token.split()) - 1): #doesn't seem to have much impact, number of candidates almost remain the same
+					word = token[index].strip()
+					if word.endswith(",") or (word.endswith(".") and len(word) > 2):
+						specialChar = True
+						break
+				if not specialChar:
+					self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
 	# def print_tokens(self):
@@ -171,7 +178,7 @@ class Tokenizer:
 	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
-		data = [] 
+		data = []
 		pos, neg = 0, 0
 
 		fcontents = self.clean(self.fcontents)
@@ -188,8 +195,10 @@ class Tokenizer:
 			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
 			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
 			# token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
-			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token))
+			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
+			# token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
 			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
+			token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
 			token_vector['endsWithComma'] = int(endsWithComma(token))
 			token_vector['numWords'] = int(len(token))
