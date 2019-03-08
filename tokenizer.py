@@ -21,10 +21,24 @@ class Tokenizer:
 			self.fcontents = f.read()
 			
 	def get_label(self, word):
-		# Returns label 0 (Not an entity) or 1 (Is an entity)
+		# Returns label 0 (Not an entity) or 1 (Is an entity) -- <b>Elon Musk</b>
 		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.+?)" + Tokenizer.end_tag + "(.*)", word)
 		if entity_word:
 			if re.findall(r"\w+", entity_word.groups()[0]) or re.findall(r"\w+", entity_word.groups()[-1]):
+				return 0
+			return 1
+
+		# -- <b>Elon
+		entity_word = re.search("(.*)" + Tokenizer.start_tag + "(.*)", word)
+		if entity_word:
+			if re.findall(r"\w+", entity_word.groups()[0]):
+				return 0
+			return 1
+
+		# -- Musk</b>
+		entity_word = re.search("(.*)" + Tokenizer.end_tag + "(.*)", word)
+		if entity_word:
+			if re.findall(r"\w+", entity_word.groups()[-1]):
 				return 0
 			return 1
 
