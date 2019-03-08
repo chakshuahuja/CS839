@@ -3,6 +3,88 @@ import re
 from features import *
 import pandas as pd
 
+
+class Token:
+    def __repr__(self):
+        return "Tok<{string}, {pos}, {raw_pos}>".format(
+            string=self.string.replace(UnigramIterator.START_TAG, "").replace(UnigramIterator.END_TAG, ""), pos=self.labelled_pos, raw_pos=self.raw_pos
+        )
+
+    def __init__(self, string, pos, raw_pos):
+        self.string = string
+        self.labelled_pos = pos
+        self.raw_pos = raw_pos
+
+class UnigramIterator:
+    START_TAG = "<b>"
+    END_TAG = "</b>"
+    def __init__(self, string):
+        self.string = string
+
+        # TODO: handle cases for different delimiters
+        self.words = re.split(r' |\n', string)
+        self.counter = -1
+        self.labelled_cursor = 0
+        self.raw_cursor = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+
+        start_tag = self.START_TAG
+        end_tag = self.END_TAG
+
+        self.counter += 1
+        if self.counter >= len(self.words):
+            raise StopIteration
+
+        curr_word = self.words[self.counter]
+        rm_chars = 0
+        if start_tag in curr_word: rm_chars += len(start_tag)
+        if end_tag in curr_word: rm_chars += len(end_tag)
+
+        result = Token(
+            curr_word,
+            self.labelled_cursor + (len(start_tag) if curr_word.startswith(start_tag) else 0),
+            self.raw_cursor,
+        )
+
+        self.raw_cursor = self.raw_cursor + len(curr_word) + 1 - rm_chars
+        self.labelled_cursor = self.labelled_cursor + len(curr_word) + 1
+
+        return result
+
+class NgramIterator():
+
+    def __init__(self, string, n):
+        self.ui = UnigramIterator(string)
+        self.prev = []
+        self.n = n
+
+    def __iter__(self): return self
+    def __next__(self):
+        new_tokens = [next(self.ui) for i in range(self.n)] if not self.prev else [next(self.ui)]
+        curr_tokens = self.prev + new_tokens
+
+        self.prev = curr_tokens[1:]
+        return Token(
+            ' '.join([t.string for t in curr_tokens]),
+            curr_tokens[0].labelled_pos, 
+            curr_tokens[0].raw_pos,
+        )
+
+def test(s):
+    tokens = NgramIterator(s, 2)
+    replaced_s = \
+      s.replace(UnigramIterator.START_TAG, "").replace(UnigramIterator.END_TAG, "")
+    raw_tokens = NgramIterator(replaced_s, 2)
+    for t,rt in zip(tokens, raw_tokens):
+        if t.raw_pos != rt.labelled_pos:
+            print("INVALID", t, rt)
+            return False
+    return True
+
 class Tokenizer:
 
 	start_tag = "<b>"
@@ -48,42 +130,14 @@ class Tokenizer:
 		# Remove the start and end tags
 		return token.replace(Tokenizer.start_tag, '').replace(Tokenizer.end_tag, '')
 
-	def get_offset(self, start_tag_count, end_tag_count):
-		return len(Tokenizer.start_tag) * start_tag_count + len(Tokenizer.end_tag) * end_tag_count
-
 	def tokenize(self, maximum_len=4):
 
-		def enumerate_words(s):
-			words = re.split(r' |\n', s)
-			lens = [len(i) + 1 for i in words]
-			from itertools import accumulate
-			alens = [0] + list(accumulate(lens))
-			zipped = zip(words, alens)
-			return [(w, l) for w,l in zipped if len(w) > 0]
-
-		unitokens = list(enumerate_words(self.fcontents))
-
 		for curr_len in range(1, maximum_len + 1):
-			# Reset the count of start and end tags
-			curr_start_tag = 0
-			curr_end_tag = 0
-
-			for tid in range(0, len(unitokens)):
-				# TODO: fix for the last overflow cases
-				if tid + curr_len > len(unitokens):
-					break
-				curr_token_location_pair = unitokens[tid:tid+curr_len]
-				curr_unprocessed_token = ' '.join([t[0] for t in curr_token_location_pair])
-
-				curr_token = self.clean_token(curr_unprocessed_token)
-				curr_location = curr_token_location_pair[0][1] - self.get_offset(curr_start_tag, curr_end_tag)
-
-				curr_label = self.get_label(curr_unprocessed_token)
-
-				curr_start_tag += curr_unprocessed_token.count(Tokenizer.start_tag)
-				curr_end_tag += curr_unprocessed_token.count(Tokenizer.end_tag)
-
-				self.tokens.append((self.fidentifier, curr_token, curr_location, curr_label))
+			word_iterator = NgramIterator(self.fcontents, curr_len)
+			for token in list(word_iterator):
+				print(token)
+				curr_label = self.get_label(token.string)
+				self.tokens.append((self.fidentifier, self.clean_token(token.string), token.raw_pos, curr_label))
 
 		return self.tokens
 
@@ -94,9 +148,9 @@ class Tokenizer:
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	# def print_tokens(self):
-	# 	for fid, t, tp, l in self.filtered_tokens:
-	# 		# print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	def print_tokens(self):
+		for fid, t, tp, l in self.filtered_tokens:
+			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = [] 
@@ -138,7 +192,7 @@ all_data = []
 all_pos = 0
 all_neg = 0
 
-for i in range(1, 301):
+for i in range(156, 157):
 	fname = ""
 	if i < 10:
 		fname = "00" + str(i)
@@ -146,12 +200,12 @@ for i in range(1, 301):
 		fname = "0" + str(i)
 	else:
 		fname = str(i)
-	# print(fname)
+	print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()
 
-	# F.print_tokens()
+	F.print_tokens()
 
 
 	d, p, n = F.vectorize()
@@ -160,6 +214,6 @@ for i in range(1, 301):
 	all_pos += p
 	all_neg += n
 
-# print(len(all_data), all_pos, all_neg)
+print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
