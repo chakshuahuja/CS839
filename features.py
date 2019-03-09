@@ -17,8 +17,8 @@ def isLocation(word):
 
 	for i in range(len(array)):
 		word = array[i].lower()
-		word = removeSpecialCharacter(word)
-		word = removeApostrophS(word)
+		word = removeSpecialCharacter(removeApostrophS(word))
+
 		# print(word)
 		if word in [c.lower() for c in flat_country_list]:
 			return True
@@ -51,8 +51,7 @@ def isCommonName(word):
 	array = word.split(" ")
 	for i in range(len(array)):
 		word = array[i].upper()
-		word = removeApostrophS(word)
-		word = removeSpecialCharacter(word)
+		word = removeSpecialCharacter(removeApostrophS(word))
 		# print(word)
 		if word in commonFirstNames or word in commonLastNames:
 			return True
@@ -69,8 +68,7 @@ def containsCommonWord(word):
 	array = word.split(" ")
 	for i in range(len(array)):
 		word = array[i].lower()
-		word = removeApostrophS(word)
-		word = removeSpecialCharacter(word)
+		word = removeSpecialCharacter(removeApostrophS(word))
 		if word in commonWords or word in pronouns or word in familyRelations or word in statementWords or word in nonPersonEntityTypes or word in occupationWords:
 			return True
 	return False
@@ -92,7 +90,7 @@ def isStartOfSentence(offset, text):
 def isContainPrefix(word):
 	# listOfPrefixes = [t.lower() for t in read_file_and_get_words('utils/titles.txt')] #check if the two dicts are replaceable
 	listOfPrefixes = ["President", "DJ", "Captain", "Adm", "Atty", "Brother", "Capt", "Chief", "Cmdr", "Col", "Dean", "Dr", "Elder", "Father", "Gen", "Gov", "Hon", "Lt Col", "Maj", "MSgt", "Mr", "Mrs", "Ms", "Prof", "Rabbi", "Rev", "Sister", "Sir", "Queen", "Reverend"]
-	word = removeSpecialCharacter(word)
+	word = removeSpecialCharacter(removeApostrophS(word))
 	firstWord = word.partition(' ')[0]
 	if firstWord in listOfPrefixes:
 		return True
@@ -182,9 +180,8 @@ def hasPartialNameOccurence(offset, text, word):
 def hasFullNameOccurence(offset, text, word):
 	splits = word.split(" ");
 	if(len(splits) > 1):
-		return False;
-	word = removeApostrophS(word)
-	word = removeSpecialCharacter(word)
+		return False
+	word = removeSpecialCharacter(removeApostrophS(token))
 	occurences = [i for i in range(len(text)) if text.startswith(word, i)]
 	for j in range(len(occurences)):
 		newOffset = occurences[j]
@@ -216,7 +213,7 @@ def isPrecededByOccupationWords(offset, text):
 	wordThreshold = 5
 	for i in range(wordThreshold):
 		word, offset = getPreviousWord(offset, text)
-		word = removeSpecialCharacter(word.strip())
+		word = removeSpecialCharacter(removeApostrophS(word.strip()))
 		word = word.lower()
 		if word != "":
 			# ignoring words that start with an upper case and are not the 
@@ -238,7 +235,7 @@ def isSucceededByOccupationWords(offset, text, word):
 	offset = offset + len(word)
 	for i in range(wordThreshold):
 		word, offset = getNextWord(offset, text)
-		word = removeSpecialCharacter(word.strip())
+		word = removeSpecialCharacter(removeApostrophS(word.strip()))
 		word = word.lower()
 		if word != "":
 			# ignoring words that start with caps (what about cases like Chicago Film Festival)
