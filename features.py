@@ -181,7 +181,7 @@ def hasFullNameOccurence(offset, text, word):
 	splits = word.split(" ");
 	if(len(splits) > 1):
 		return False
-	word = removeSpecialCharacter(removeApostrophS(token))
+	word = removeSpecialCharacter(removeApostrophS(word))
 	occurences = [i for i in range(len(text)) if text.startswith(word, i)]
 	for j in range(len(occurences)):
 		newOffset = occurences[j]
