@@ -159,20 +159,17 @@ class Tokenizer:
 
 		return self.tokens
 
+	def _has_special_char(self, token):
+		def f(word):
+			return word.endswith(",") or word.endswith("!") or word.endswith(".")
+
+		return any([f(w.strip()) for w in token.split()])
+
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
-			if allWordsCapitalized(token):
-				specialChar = False
-				words = token.split()
-				for index in range(len(words) - 1):
-					word = words[index].strip()
-					if word.endswith(",") or word.endswith("!") or word.endswith("."):
-						# print(token)
-						specialChar = True
-						break
-				if not specialChar:
-					self.filtered_tokens.append((fid, token, tpos, tlabel))
+			if allWordsCapitalized(token) and not self._has_special_char(token):
+				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
 	# def print_tokens(self):
@@ -245,6 +242,6 @@ for i in range(1, 301):
 	all_pos += p
 	all_neg += n
 
-# print(len(all_data), all_pos, all_neg)
+print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
