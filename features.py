@@ -529,11 +529,11 @@ def isFollowedByNonPersonEntity(offset, content):
 # 	print(getPreviousName(offset, text))
 
 
-def main():
-	print(read_file_and_get_words('utils/country_list.txt'))
+# def main():
+	# print(read_file_and_get_words('utils/country_list.txt'))
 	# text = getDocumentContent(133);
 	# index = text.index("Mariah Carey")
-	print(isCommonName("Golden Globe Awards,"))
+	# print(isCommonName("Golden Globe Awards,"))
 	# print(isLocation("India"))
 	# print(isLocation("Ab"))
 	# print(partOfMultipleNames(index, 104))
@@ -561,4 +561,4 @@ def main():
 	# print(isPreceededByNonPersonEntity(101, 101))
 	# print(isFollowedByNonPersonEntity(101, 101))
 
-main()
+# main()
