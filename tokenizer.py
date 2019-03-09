@@ -157,7 +157,9 @@ class Tokenizer:
 			if allWordsCapitalized(token) and not self._has_special_char(token):
 				if not self._has_more_than_threshold_freq(token):
 					self.filtered_tokens.append((fid, token, tpos, tlabel))
-
+				else:
+					print(token, self.freq_tokens.get(token))
+				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
 	def print_tokens(self):
@@ -207,6 +209,7 @@ class Tokenizer:
 			token_vector['isCommonName'] = int(isCommonName(token))
 			token_vector['allCharactersCapitalized'] = int(allCharactersCapitalized(token))
 			token_vector['isLocation'] = int(isLocation(token))
+			token_vector['isOnlyTitle'] = int(is_only_title(token))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
@@ -227,7 +230,7 @@ for i in range(1, 301):
 		fname = "0" + str(i)
 	else:
 		fname = str(i)
-	# print(fname)
+	print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()

@@ -30,6 +30,15 @@ def removeSpecialCharacter(word):
 			cleanString = cleanString + str(ch)
 	return cleanString
 
+def is_only_title(token):
+	titles = [t.lower() for t in read_file_and_get_words('utils/titles.txt')]
+	# Single word tokens
+	if len(token.split(' ')) == 1:
+		word = removeSpecialCharacter(token)
+		if word.lower() in titles:
+			return False
+	return True
+
 def removeApostrophS(word):
 	word = word.replace("'s", "")
 	return word
