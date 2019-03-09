@@ -121,9 +121,15 @@ def isPartial(offset, text, word):
 	offset = offset + len(word)
 	nextWord, nextOffset = getNextWord(offset, text)
 
-	previousWord = removeSpecialCharacter(previousWord)
-	nextWord = removeSpecialCharacter(nextWord)
-		
+	previousWord = previousWord.strip()
+	nextWord = nextWord.strip()
+
+	if (word.endswith(",") or word.endswith(".")) and not (allWordsCapitalized(previousWord)):
+		return False
+
+	if (previousWord.endswith(",") or previousWord.endswith("!")) or (not allWordsCapitalized(nextWord)) or word.endswith(",") or word.endswith("."):
+		return False
+	
 	return allWordsCapitalized(previousWord) or allWordsCapitalized(nextWord)
 
 def hasPartialNameOccurence(offset, text, word):
@@ -281,20 +287,21 @@ def nextLineContainsPronoun(offset, content):
 
 def isPreceededByFamilyRelation(offset, content):
 	
-	lineStartIndex = offset - 1
+	lineStartIndex = offset
 
 	while(lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
 		lineStartIndex = lineStartIndex - 1
 	
 	line = content[lineStartIndex:offset + 1]
 
-
 	words = line.split()
+	index = 1
 	for word in words:
-		word = word.strip()
-		for relation in familyRelations:
-			if relation in word:
-				return True
+		if not(index == 1 and word[0].isupper()):
+			word = word.strip().lower()
+			for relation in familyRelations:
+				if relation in word:
+					return True
 
 	return False
 
@@ -308,12 +315,35 @@ def isFollowedByFamilyRelation(offset, content):
 
 	words = line.split()
 	for word in words:
-		word = word.strip().lower()
-		for relation in familyRelations:
-			if relation in word:
-				return True
+		if (not word[0].isupper()):
+			word = word.strip().lower()
+			for relation in familyRelations:
+				if relation in word:
+					return True
 
 	return False
+
+def isPreceededByThe(offset, content):
+	lineStartIndex = offset
+	while(lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
+		lineStartIndex = lineStartIndex - 1
+
+	line = content[lineStartIndex:offset + 1]
+	words = list(reversed(line.split()))
+	
+	for word in words:
+		word = word.strip()
+		if (not word[0].isupper()):
+			if (word.lower() == "the"):
+				return True
+			else:
+				return False
+		
+		if (word.lower() == "the"):
+			return True
+
+	return False
+			
 
 def isNearStatementWord(offset, content):
 
@@ -345,12 +375,54 @@ def isNearStatementWord(offset, content):
 
 	return False
 
+def isPrecededByOtherEntities(offset, content):
+	lineStartIndex = offset
+	
+	while (lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.']):
+		lineStartIndex = lineStartIndex - 1
+	
+	line = content[lineStartIndex:offset + 1]
+	
+	words = list(reversed(line.split()))
+
+	for word in words:
+		word = word.strip()
+		if not allWordsCapitalized(word):
+			return False
+		if word.endswith(",") or word in ["and", "&"]:
+			return True
+
+	return False
+
+
+def isSucceededByOtherEntities(offset, content):
+	lineEndIndex = offset + 1
+
+	while(lineEndIndex < len(content) - 1 and content[lineEndIndex] not in ['\n', '.']):
+		lineEndIndex = lineEndIndex + 1
+
+	line = content[offset:lineEndIndex + 1]
+
+	words = line.split()
+	checkNextWord = False
+	for word in words:
+		word = word.strip()
+		if checkNextWord and allWordsCapitalized(word):
+			return True
+		if word in ["and", "&"]:
+			return True
+		if word.endswith(","):
+			checkNextWord = True
+		if not allWordsCapitalized(word):
+			return False
+	return False
+
 def isPreceededByNonPersonEntity(offset, content):
 
 	lineStartIndex = offset
 	numSpaces = 0
-
-	while (lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.'] and numSpaces < 5):
+	threshold = 5
+	while (lineStartIndex > 0 and content[lineStartIndex] not in ['\n', '.'] and numSpaces < threshold):
 		lineStartIndex = lineStartIndex - 1
 		if content[lineStartIndex] == " ":
 			numSpaces = numSpaces + 1
@@ -358,20 +430,22 @@ def isPreceededByNonPersonEntity(offset, content):
 	line = content[lineStartIndex:offset + 1]
 
 	words = line.split()
+	index = 0
 	for word in words:
+		index = index + 1
 		word = word.strip().lower()
 		for entity in nonPersonEntityTypes:
 			if entity in word:
-				return True
+				return (True, threshold - index)
 
-	return False
+	return (False, -1 * threshold)
 
 def isFollowedByNonPersonEntity(offset, content):
-
+	threshold = 5
 	lineEndIndex = offset + 1
 	numSpaces = 0
 	
-	while(lineEndIndex < len(content) - 1 and content[lineEndIndex] not in ['\n', '.'] and numSpaces < 5):
+	while(lineEndIndex < len(content) - 1 and content[lineEndIndex] not in ['\n', '.'] and numSpaces < threshold):
 		lineEndIndex = lineEndIndex + 1
 		if content[lineEndIndex] == " ":
 			numSpaces = numSpaces + 1
@@ -379,13 +453,15 @@ def isFollowedByNonPersonEntity(offset, content):
 	line = content[offset:lineEndIndex + 1]
 
 	words = line.split()
+	index = 0
 	for word in words:
+		index = index + 1
 		word = word.strip().lower()
 		for entity in nonPersonEntityTypes:
 			if entity in word:
-				return True
+				return (True, index)
 
-	return False
+	return (False, -1 * threshold)
 
 # def getPreviousName(offset, text):
 # 	word = ""
