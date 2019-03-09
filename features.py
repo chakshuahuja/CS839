@@ -11,7 +11,8 @@ def getDocumentContent(document):
 	return file.read()
 
 def isLocation(word):
-	country_list = [c.lower() for c in read_file_and_get_words('utils/country_list.txt')]
+	country_list = [c.lower().split() for c in read_file_and_get_words('utils/country_list.txt')]
+	flat_country_list = [item for sublist in country_list for item in sublist]
 	array = word.split(" ")
 
 	for i in range(len(array)):
@@ -19,7 +20,7 @@ def isLocation(word):
 		word = removeSpecialCharacter(word)
 		word = removeApostrophS(word)
 		# print(word)
-		if word in [c.lower() for c in country_list]:
+		if word in [c.lower() for c in flat_country_list]:
 			return True
 	return False
 
@@ -89,6 +90,7 @@ def isStartOfSentence(offset, text):
 	return False
 
 def isContainPrefix(word):
+	# listOfPrefixes = [t.lower() for t in read_file_and_get_words('utils/titles.txt')] #check if the two dicts are replaceable
 	listOfPrefixes = ["President", "DJ", "Captain", "Adm", "Atty", "Brother", "Capt", "Chief", "Cmdr", "Col", "Dean", "Dr", "Elder", "Father", "Gen", "Gov", "Hon", "Lt Col", "Maj", "MSgt", "Mr", "Mrs", "Ms", "Prof", "Rabbi", "Rev", "Sister", "Sir", "Queen", "Reverend"]
 	word = removeSpecialCharacter(word)
 	firstWord = word.partition(' ')[0]
@@ -349,10 +351,12 @@ def isFollowedByFamilyRelation(offset, content):
 
 	words = line.split()
 	for word in words:
+		# print (word)
 		if (not word[0].isupper()):
 			word = word.strip().lower()
 			for relation in familyRelations:
 				if relation in word:
+					# print(relation, word)
 					return True
 
 	return False
@@ -530,12 +534,11 @@ def isFollowedByNonPersonEntity(offset, content):
 
 
 def main():
-	print(read_file_and_get_words('utils/country_list.txt'))
-	# text = getDocumentContent(133);
+	# text = getDocumentContent("147")
+	print(isLocation("abc"))
 	# index = text.index("Mariah Carey")
-	print(isCommonName("Golden Globe Awards,"))
-	# print(isLocation("India"))
-	# print(isLocation("Ab"))
+	# print(isFollowedByFamilyRelation(53, text))
+	# print(isCommonName("Golden Globe Awards,"))
 	# print(partOfMultipleNames(index, 104))
 	# print(index)
 	# word = "Martin Scorsese's"

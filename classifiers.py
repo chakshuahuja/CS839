@@ -25,7 +25,7 @@ X_input_train = X_train.drop(['position', 'token', 'fid'], axis=1)
 X_input_test = X_test.drop(['position', 'token', 'fid'], axis=1)
 
 feature_list = list(X_input_test.columns)
-print(feature_list)
+# print(feature_list)
 
 #SVM
 # clf = svm.SVC(gamma='scale', tol=0.00001)

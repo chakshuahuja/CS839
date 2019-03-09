@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import svm
 from sklearn import linear_model
+from imblearn.over_sampling import SMOTE
 
 DT = "Decision Tree"
 RF = "Random Forest"
@@ -33,6 +34,10 @@ class Classifers:
 		clf = clf = RandomForestClassifier(n_estimators = 1000, criterion="entropy", bootstrap=False)
 		clf.fit(self.X_train, self.y_train.values.ravel())
 		y_pred = clf.predict(self.X_test)
+		feature_list = list(self.X_test.columns)
+		feature_importance = clf.feature_importances_
+		for index in range(len(feature_list)):
+			print(feature_list[index], feature_importance[index])
 		return (precision_recall_fscore_support(self.y_test, y_pred, average='binary'))
 		
 	def support_vector(self):
@@ -42,7 +47,7 @@ class Classifers:
 		return (precision_recall_fscore_support(self.y_test, y_pred, average='binary'))
 
 	def neural_network(self):
-		clf = MLPClassifier(solver='lbfgs', activation='tanh', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42)
+		clf = MLPClassifier(solver='adam', activation='relu', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42)
 		clf.fit(self.X_train, self.y_train.values.ravel())
 		y_pred = clf.predict(self.X_test)
 		return (precision_recall_fscore_support(self.y_test, y_pred, average='binary'))
@@ -68,6 +73,11 @@ class Classifers:
 		y = self.input_data[['label']]
 		
 		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.33)
+
+		# smote = SMOTE()
+		# self.X_train, self.y_train = smote.fit_sample(self.X_train, self.y_train)
+		# self.X_train = pd.DataFrame(self.X_train)
+		# self.y_train = pd.DataFrame(self.y_train)
 
 		if classifier == DT: self.print_results(DT, self.decision_tree())
 		if classifier == SVM: self.print_results(SVM, self.support_vector())

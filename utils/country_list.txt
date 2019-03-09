@@ -4,7 +4,7 @@ Berlin
 Algeria
 Andorra
 Angola
-Antigua and Barbuda
+Antigua Barbuda
 Argentina
 Armenia
 Australia
@@ -20,7 +20,7 @@ Belize
 Benin
 Bhutan
 Bolivia
-Bosnia and Herzegovina
+Bosnia Herzegovina
 Botswana
 Brazil
 Brunei
@@ -161,9 +161,9 @@ Somalia
 South Africa
 Spain
 Sri Lanka
-St. Kitts and Nevis
+St. Kitts Nevis
 St. Lucia
-St. Vincent and the Grenadines
+St. Vincent Grenadines
 Sudan
 Suriname
 Sweden
@@ -175,7 +175,7 @@ Tanzania
 Thailand
 Togo
 Tonga
-Trinidad and Tobago
+Trinidad Tobago
 Tunisia
 Turkey
 Turkmenistan
@@ -188,10 +188,19 @@ United States
 Uruguay
 Uzbekistan
 Vanuatu
-Vatican City (Holy See)
+Vatican City Holy See
 Venezuela
 Vietnam
-Western Sahara (Disputed)
+Western Sahara Disputed
 Yemen
 Zambia
 Zimbabwe
+San Francisco
+Chicago
+Washington DC
+New York
+California
+Chicago
+Europe
+Britain
+Berlin

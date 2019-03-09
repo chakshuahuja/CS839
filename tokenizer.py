@@ -97,11 +97,11 @@ def test(data):
 
 		if token_vector['position'] in all_indices:
 			feature_val = int(isStartOfSentence(token_vector['position'], text))
-		else:
-			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices, token_vector['fid'])
+		# else:
+		# 	print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices, token_vector['fid'])
 
 		if vector_val != feature_val:
-			print(token_vector['token'], vector_val, feature_val, token_vector['position'])
+			# print(token_vector['token'], vector_val, feature_val, token_vector['position'])
 			return False
 
 	return True
@@ -139,7 +139,7 @@ class Tokenizer:
 
 	def _has_special_char(self, token):
 		def f(word):
-			return word.endswith(",") or word.endswith("!") or word.endswith(".") or "'s" in word
+			return word.endswith(",") or word.endswith("!") or word.endswith(".") or word.endswith("'s") or word.endswith("s'")
 
 		return any([f(w.strip()) for w in token.split()[:-1]])
 
@@ -159,12 +159,12 @@ class Tokenizer:
 					self.filtered_tokens.append((fid, token, tpos, tlabel))
 				else:
 					print(token, self.freq_tokens.get(token))
-				self.filtered_tokens.append((fid, token, tpos, tlabel))
+				# self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	def print_tokens(self):
-		for fid, t, tp, l in self.filtered_tokens:
-			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	# def print_tokens(self):
+	# 	for fid, t, tp, l in self.filtered_tokens:
+	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = []
@@ -243,6 +243,6 @@ for i in range(1, 301):
 	all_pos += p
 	all_neg += n
 
-print(len(all_data), all_pos, all_neg)
+# print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")

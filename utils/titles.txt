@@ -3,3 +3,9 @@ Mrs
 Ms
 Professor
 Dr
+Sir
+Rev
+Reverend
+Prof
+Capt
+Col
