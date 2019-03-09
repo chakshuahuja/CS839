@@ -51,8 +51,8 @@ def isCommonName(word):
 	array = word.split(" ")
 	for i in range(len(array)):
 		word = array[i].upper()
-		word = removeSpecialCharacter(word)
 		word = removeApostrophS(word)
+		word = removeSpecialCharacter(word)
 		# print(word)
 		if word in commonFirstNames or word in commonLastNames:
 			return True
@@ -69,8 +69,8 @@ def containsCommonWord(word):
 	array = word.split(" ")
 	for i in range(len(array)):
 		word = array[i].lower()
-		word = removeSpecialCharacter(word)
 		word = removeApostrophS(word)
+		word = removeSpecialCharacter(word)
 		if word in commonWords or word in pronouns or word in familyRelations or word in statementWords or word in nonPersonEntityTypes or word in occupationWords:
 			return True
 	return False
@@ -107,6 +107,9 @@ def isPrecededByBy(offset, text):
 		return False
 
 def allCharactersCapitalized(token):
+	token = removeSpecialCharacter(removeApostrophS(token))
+	if token[-1] == 's':
+		token = token[:-1]
 	return all([c.isupper() for c in token]) and len(token) > 1
 
 def isContainSuffix(word):
@@ -533,10 +536,11 @@ def isFollowedByNonPersonEntity(offset, content):
 # 	print(getPreviousName(offset, text))
 
 
-# def main():
+def main():
 	# print(read_file_and_get_words('utils/country_list.txt'))
-	# text = getDocumentContent(133);
-	# index = text.index("Mariah Carey")
+	# text = getDocumentContent(160);
+	# index = text.index("HMV")
+	print(allCharactersCapitalized("HMV-s"))
 	# print(isCommonName("Golden Globe Awards,"))
 	# print(isLocation("India"))
 	# print(isLocation("Ab"))
