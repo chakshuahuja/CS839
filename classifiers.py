@@ -50,11 +50,15 @@ X_test['y_true'] = y_test
 X_test['y_pred'] = y_pred
 X_test.to_csv("prediction.csv")
 
-# result = X_test.values
-# for i in range(len(result)):
-# 	length = len(result[i])
-# 	if result[i][length - 1] == True and result[i][length - 2] == False:
-# 		print(result[i])
+false_result = []
+result = X_test.values
+for i in range(len(result)):
+	length = len(result[i])
+	if result[i][length - 1] == True and result[i][length - 2] == False:
+		false_result.append(result[i])
+
+df = pd.DataFrame(false_result)
+df.to_csv("false_result.csv")
 
 # add feature whether more entities are present in the sentence
 # capitalized and not first word common names
