@@ -93,7 +93,8 @@ def test(data):
 
 		text = getDocumentContent(token_vector['fid'])
 		vector_val = token_vector['isStartOfSentence']
-		all_indices = [m.start() for m in re.finditer(token_vector['token'], text)]
+		all_indices = [i for i in range(len(text)) if text.startswith(token_vector['token'], i)]
+
 		if token_vector['position'] in all_indices:
 			feature_val = int(isStartOfSentence(token_vector['position'], text))
 		else:
@@ -212,7 +213,7 @@ for i in range(1, 301):
 	# F.print_tokens()
 
 	d, p, n = F.vectorize()
-
+	# print('Calling Test', test(d))
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
