@@ -153,7 +153,6 @@ class Tokenizer:
 		for fid, token, tpos, tlabel in self.tokens:
 			# BLOCKING 1: Remove token where every word in the token is not capitalized
 			# BLOCKING 2: Remove token if it contains , . or !
-			# BLOCKING 3: Remove token if freq across all documents > threshold
 			if allWordsCapitalized(token) and not self._has_special_char(token):
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
@@ -237,6 +236,7 @@ for i in range(1, 301):
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
+	print(len(all_data), all_pos, all_neg)
 
 print(len(all_data), all_pos, all_neg)
 
