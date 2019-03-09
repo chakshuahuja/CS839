@@ -2,7 +2,7 @@ from itertools import accumulate
 import re
 from features import *
 import pandas as pd
-
+from collections import Counter
 
 class Token:
     def __repr__(self):
@@ -91,14 +91,14 @@ class NgramIterator():
 def test(data):
 	for i, token_vector in enumerate(data):
 
-		text = getDocumentContent(token_vector['fid'])
+		text = Tokenizer.clean(getDocumentContent(token_vector['fid']))
 		vector_val = token_vector['isStartOfSentence']
 		all_indices = [i for i in range(len(text)) if text.startswith(token_vector['token'], i)]
 
 		if token_vector['position'] in all_indices:
 			feature_val = int(isStartOfSentence(token_vector['position'], text))
 		else:
-			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices)
+			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices, token_vector['fid'])
 
 		if vector_val != feature_val:
 			print(token_vector['token'], vector_val, feature_val, token_vector['position'])
@@ -115,6 +115,7 @@ class Tokenizer:
 
 		self.fcontents = None	
 		self.tokens = [] # Contains all 1,2,3..maximum_len words tokens
+		self.freq_tokens = Counter() # Contains mapping of token -> freq
 		self.filtered_tokens = [] # Only all capitalized tokens
 
 		with open(fname,'r') as f:
@@ -133,6 +134,7 @@ class Tokenizer:
 				curr_label = token.has_name
 				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
+		self.freq_tokens = Counter([t[1] for t in self.tokens])
 		return self.tokens
 
 	def _has_special_char(self, token):
@@ -141,11 +143,22 @@ class Tokenizer:
 
 		return any([f(w.strip()) for w in token.split()])
 
+	def _has_more_than_threshold_freq(self, token, threshold=10):
+		if self.freq_tokens.get(token, 0) > threshold:
+			return True
+		return False
+
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
+			# BLOCKING 1: Remove token where every word in the token is not capitalized
+			# BLOCKING 2: Remove token if it contains , . or !
+			# BLOCKING 3: Remove token if freq across all documents > threshold
 			if allWordsCapitalized(token) and not self._has_special_char(token):
+				# if not self._has_more_than_threshold_freq(token):
+				# 	self.filtered_tokens.append((fid, token, tpos, tlabel))
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
+
 		return self.filtered_tokens
 
 	def print_tokens(self):
