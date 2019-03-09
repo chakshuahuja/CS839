@@ -153,12 +153,10 @@ class Tokenizer:
 		for fid, token, tpos, tlabel in self.tokens:
 			# BLOCKING 1: Remove token where every word in the token is not capitalized
 			# BLOCKING 2: Remove token if it contains , . or !
+			# BLOCKING 3: Remove token if freq in that document > threshold
 			if allWordsCapitalized(token) and not self._has_special_char(token):
 				if not self._has_more_than_threshold_freq(token):
 					self.filtered_tokens.append((fid, token, tpos, tlabel))
-				# else:
-				# 	print(token, self.freq_tokens.get(token))
-				# self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
 	def print_tokens(self):
