@@ -206,7 +206,7 @@ class Tokenizer:
 			token_vector['isPreceededByThe'] = int(isPreceededByThe(tpos, fcontents))
 			token_vector['containsCommonWord'] = int(containsCommonWord(token))
 			token_vector['isCommonName'] = int(isCommonName(token))
-
+			token_vector['allCharactersCapitalized'] = int(allCharactersCapitalized(token))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1

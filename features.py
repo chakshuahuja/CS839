@@ -77,6 +77,9 @@ def isPrecededByBy(offset, text):
 	else:
 		return False
 
+def allCharactersCapitalized(token):
+	return all([c.isupper() for c in token]) and len(token) > 1
+
 def isContainSuffix(word):
 	listOfSuffixes = ["II", "III", "IV", "CPA", "DDS", "Esq", "JD", "Jr", "LLD", "MD", "PhD", "Ret", "RN", "Sr", "DO"]
 	word = removeSpecialCharacter(word)
