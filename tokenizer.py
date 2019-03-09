@@ -134,7 +134,6 @@ class Tokenizer:
 				curr_label = token.has_name
 				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
-		self.freq_tokens = Counter([t[1] for t in self.tokens])
 		return self.tokens
 
 	def _has_special_char(self, token):
@@ -149,6 +148,7 @@ class Tokenizer:
 		return False
 
 	def filter_tokens(self):
+		self.freq_tokens = Counter([t[1] for t in self.tokens])
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
 			# BLOCKING 1: Remove token where every word in the token is not capitalized
@@ -169,7 +169,6 @@ class Tokenizer:
 	def vectorize(self):
 		data = []
 		pos, neg = 0, 0
-
 		fcontents = self.clean(self.fcontents)
 
 		for fid, token, tpos, tlabel in self.filtered_tokens:
@@ -230,7 +229,7 @@ for i in range(1, 301):
 		fname = "0" + str(i)
 	else:
 		fname = str(i)
-	print(fname)
+	# print(fname)
 	F = Tokenizer("labelled/" + fname + ".txt")
 	F.tokenize()
 	F.filter_tokens()
@@ -244,5 +243,6 @@ for i in range(1, 301):
 	all_neg += n
 
 # print(len(all_data), all_pos, all_neg)
+
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")

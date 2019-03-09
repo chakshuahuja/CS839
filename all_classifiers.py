@@ -47,7 +47,7 @@ class Classifers:
 		return (precision_recall_fscore_support(self.y_test, y_pred, average='binary'))
 
 	def neural_network(self):
-		clf = MLPClassifier(solver='adam', activation='relu', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42)
+		clf = MLPClassifier(solver='adam', activation='relu', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42, max_iter=500)
 		clf.fit(self.X_train, self.y_train.values.ravel())
 		y_pred = clf.predict(self.X_test)
 		return (precision_recall_fscore_support(self.y_test, y_pred, average='binary'))

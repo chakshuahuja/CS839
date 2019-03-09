@@ -533,12 +533,13 @@ def isFollowedByNonPersonEntity(offset, content):
 # 	print(getPreviousName(offset, text))
 
 
-def main():
-	# text = getDocumentContent("147")
-	print(isLocation("abc"))
+# def main():
+	# print(read_file_and_get_words('utils/country_list.txt'))
+	# text = getDocumentContent(133);
 	# index = text.index("Mariah Carey")
-	# print(isFollowedByFamilyRelation(53, text))
 	# print(isCommonName("Golden Globe Awards,"))
+	# print(isLocation("India"))
+	# print(isLocation("Ab"))
 	# print(partOfMultipleNames(index, 104))
 	# print(index)
 	# word = "Martin Scorsese's"
@@ -564,4 +565,4 @@ def main():
 	# print(isPreceededByNonPersonEntity(101, 101))
 	# print(isFollowedByNonPersonEntity(101, 101))
 
-main()
+# main()
