@@ -128,18 +128,18 @@ class Tokenizer:
 			return 1
 
 		# -- <b>Elon
-		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[0]):
-				return 0
-			return 1
+		# entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.*)", word)
+		# if entity_word:
+		# 	if re.findall(r"\w+", entity_word.groups()[0]):
+		# 		return 0
+		# 	return 1
 
-		# -- Musk</b>
-		entity_word = re.search("(.*)" + UnigramIterator.END_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[-1]):
-				return 0
-			return 1
+		# # -- Musk</b>
+		# entity_word = re.search("(.*)" + UnigramIterator.END_TAG + "(.*)", word)
+		# if entity_word:
+		# 	if re.findall(r"\w+", entity_word.groups()[-1]):
+		# 		return 0
+		# 	return 1
 
 		return 0
 
@@ -188,30 +188,31 @@ class Tokenizer:
 		for fid, token, tpos, tlabel in self.filtered_tokens:
 			# print(fid, token, tpos, len(self.clean(self.fcontents)))
 			token_vector = {'fid': fid, 'token': token, 'position': tpos, 'label': tlabel}
-			token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fcontents))
+			# token_vector['isStartOfSentence'] = int(isStartOfSentence(tpos, fcontents))
 			token_vector['isContainPrefix'] = int(isContainPrefix(token))
 			token_vector['isContainSuffix'] = int(isContainSuffix(token))
-			token_vector['isPartial'] = int(isPartial(tpos, fcontents, token))
-			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
-			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
+			# token_vector['isPartial'] = int(isPartial(tpos, fcontents, token))
+			# token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
+			# token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
 			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
-			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
-			token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
-			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
-			token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
-			# token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
-			# token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
+			# token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
+			# token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
+			# token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
+			# token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
+			# # token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
+			# # token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
-			token_vector['endsWithComma'] = int(endsWithComma(token))
-			token_vector['numWords'] = int(len(token.split()))
-			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
-			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
+			# token_vector['endsWithComma'] = int(endsWithComma(token))
+			# # token_vector['numWords'] = int(len(token.split()))
+			# token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
+			# token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
 			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
-			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fcontents))
+			# token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fcontents))
 			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fcontents))
-			token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fcontents))
-			token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fcontents))
+			# token_vector['isPreceededByNonPersonEntity'] = int(isPreceededByNonPersonEntity(tpos, fcontents))
+			# token_vector['isFollowedByNonPersonEntity'] = int(isFollowedByNonPersonEntity(tpos, fcontents))
 			token_vector['containsCommonWord'] = int(containsCommonWord(token))
+			token_vector['isCommonName'] = int(isCommonName(token))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1

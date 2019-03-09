@@ -18,7 +18,7 @@ y = input_data[['label']]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 #Neural Net
-clf = MLPClassifier(solver='lbfgs', activation='tanh', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42)
+clf = MLPClassifier(solver='adam', activation='relu', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42, max_iter=500, verbose=True)
 # print(type(X_train))
 
 X_input_train = X_train.drop(['position', 'token', 'fid'], axis=1)
@@ -49,6 +49,12 @@ print(classification_report(y_test,y_pred))
 X_test['y_true'] = y_test
 X_test['y_pred'] = y_pred
 X_test.to_csv("prediction.csv")
+
+# result = X_test.values
+# for i in range(len(result)):
+# 	length = len(result[i])
+# 	if result[i][length - 1] == True and result[i][length - 2] == False:
+# 		print(result[i])
 
 # add feature whether more entities are present in the sentence
 # capitalized and not first word common names
