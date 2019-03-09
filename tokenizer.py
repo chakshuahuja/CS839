@@ -118,30 +118,6 @@ class Tokenizer:
 
 		with open(fname,'r') as f:
 			self.fcontents = f.read()
-			
-	def get_label(self, word):
-		# Returns label 0 (Not an entity) or 1 (Is an entity) -- <b>Elon Musk</b>
-		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.+?)" + UnigramIterator.END_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[0]) or re.findall(r"\w+", entity_word.groups()[-1]):
-				return 0
-			return 1
-
-		# -- <b>Elon
-		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[0]):
-				return 0
-			return 1
-
-		# -- Musk</b>
-		entity_word = re.search("(.*)" + UnigramIterator.END_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[-1]):
-				return 0
-			return 1
-
-		return 0
 
 	@classmethod
 	def clean(self, token):
@@ -153,7 +129,6 @@ class Tokenizer:
 		for curr_len in range(1, maximum_len + 1):
 			word_iterator = NgramIterator(self.fcontents, curr_len)
 			for token in list(word_iterator):
-				# curr_label = self.get_label(token.string)
 				curr_label = token.has_name
 				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
@@ -172,9 +147,9 @@ class Tokenizer:
 				self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
-	# def print_tokens(self):
-	# 	for fid, t, tp, l in self.filtered_tokens:
-	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	def print_tokens(self):
+		for fid, t, tp, l in self.filtered_tokens:
+			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = []
