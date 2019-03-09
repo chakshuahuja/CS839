@@ -2,7 +2,7 @@ from itertools import accumulate
 import re
 from features import *
 import pandas as pd
-
+from collections import Counter
 
 class Token:
     def __repr__(self):
@@ -91,13 +91,14 @@ class NgramIterator():
 def test(data):
 	for i, token_vector in enumerate(data):
 
-		text = getDocumentContent(token_vector['fid'])
+		text = Tokenizer.clean(getDocumentContent(token_vector['fid']))
 		vector_val = token_vector['isStartOfSentence']
-		all_indices = [m.start() for m in re.finditer(token_vector['token'], text)]
+		all_indices = [i for i in range(len(text)) if text.startswith(token_vector['token'], i)]
+
 		if token_vector['position'] in all_indices:
 			feature_val = int(isStartOfSentence(token_vector['position'], text))
 		else:
-			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices)
+			print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices, token_vector['fid'])
 
 		if vector_val != feature_val:
 			print(token_vector['token'], vector_val, feature_val, token_vector['position'])
@@ -114,34 +115,11 @@ class Tokenizer:
 
 		self.fcontents = None	
 		self.tokens = [] # Contains all 1,2,3..maximum_len words tokens
+		self.freq_tokens = Counter() # Contains mapping of token -> freq
 		self.filtered_tokens = [] # Only all capitalized tokens
 
 		with open(fname,'r') as f:
 			self.fcontents = f.read()
-			
-	def get_label(self, word):
-		# Returns label 0 (Not an entity) or 1 (Is an entity) -- <b>Elon Musk</b>
-		entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.+?)" + UnigramIterator.END_TAG + "(.*)", word)
-		if entity_word:
-			if re.findall(r"\w+", entity_word.groups()[0]) or re.findall(r"\w+", entity_word.groups()[-1]):
-				return 0
-			return 1
-
-		# -- <b>Elon
-		# entity_word = re.search("(.*)" + UnigramIterator.START_TAG + "(.*)", word)
-		# if entity_word:
-		# 	if re.findall(r"\w+", entity_word.groups()[0]):
-		# 		return 0
-		# 	return 1
-
-		# # -- Musk</b>
-		# entity_word = re.search("(.*)" + UnigramIterator.END_TAG + "(.*)", word)
-		# if entity_word:
-		# 	if re.findall(r"\w+", entity_word.groups()[-1]):
-		# 		return 0
-		# 	return 1
-
-		return 0
 
 	@classmethod
 	def clean(self, token):
@@ -153,31 +131,39 @@ class Tokenizer:
 		for curr_len in range(1, maximum_len + 1):
 			word_iterator = NgramIterator(self.fcontents, curr_len)
 			for token in list(word_iterator):
-				# curr_label = self.get_label(token.string)
 				curr_label = token.has_name
 				self.tokens.append((self.fidentifier, self.clean(token.string), token.raw_pos, curr_label))
 
+		self.freq_tokens = Counter([t[1] for t in self.tokens])
 		return self.tokens
+
+	def _has_special_char(self, token):
+		def f(word):
+			return word.endswith(",") or word.endswith("!") or word.endswith(".")
+
+		return any([f(w.strip()) for w in token.split()[:-1]])
+
+	def _has_more_than_threshold_freq(self, token, threshold=10):
+		if self.freq_tokens.get(token, 0) > threshold:
+			return True
+		return False
 
 	def filter_tokens(self):
 		self.filtered_tokens = []
 		for fid, token, tpos, tlabel in self.tokens:
-			if allWordsCapitalized(token):
-				specialChar = False
-				words = token.split()
-				for index in range(len(words) - 1):
-					word = words[index].strip()
-					if word.endswith(",") or word.endswith("!") or word.endswith("."):
-						# print(token)
-						specialChar = True
-						break
-				if not specialChar:
-					self.filtered_tokens.append((fid, token, tpos, tlabel))
+			# BLOCKING 1: Remove token where every word in the token is not capitalized
+			# BLOCKING 2: Remove token if it contains , . or !
+			# BLOCKING 3: Remove token if freq across all documents > threshold
+			if allWordsCapitalized(token) and not self._has_special_char(token):
+				# if not self._has_more_than_threshold_freq(token):
+				# 	self.filtered_tokens.append((fid, token, tpos, tlabel))
+				self.filtered_tokens.append((fid, token, tpos, tlabel))
+
 		return self.filtered_tokens
 
-	# def print_tokens(self):
-	# 	for fid, t, tp, l in self.filtered_tokens:
-	# 		print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
+	def print_tokens(self):
+		for fid, t, tp, l in self.filtered_tokens:
+			print("{f_id} {label} {token} {token_position}".format(f_id=fid, token=t, token_position=tp, label=l))
 
 	def vectorize(self):
 		data = []
@@ -241,11 +227,11 @@ for i in range(1, 301):
 	# F.print_tokens()
 
 	d, p, n = F.vectorize()
-
+	# print('Calling Test', test(d))
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
 
-# print(len(all_data), all_pos, all_neg)
+print(len(all_data), all_pos, all_neg)
 df = pd.DataFrame(all_data)
 df.to_csv("data.csv")
