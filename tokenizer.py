@@ -141,7 +141,7 @@ class Tokenizer:
 		def f(word):
 			return word.endswith(",") or word.endswith("!") or word.endswith(".")
 
-		return any([f(w.strip()) for w in token.split()])
+		return any([f(w.strip()) for w in token.split()[:-1]])
 
 	def _has_more_than_threshold_freq(self, token, threshold=10):
 		if self.freq_tokens.get(token, 0) > threshold:
