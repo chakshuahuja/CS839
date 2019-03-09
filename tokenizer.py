@@ -139,7 +139,7 @@ class Tokenizer:
 
 	def _has_special_char(self, token):
 		def f(word):
-			return word.endswith(",") or word.endswith("!") or word.endswith(".")
+			return word.endswith(",") or word.endswith("!") or word.endswith(".") or "'s" in word
 
 		return any([f(w.strip()) for w in token.split()[:-1]])
 
@@ -155,9 +155,8 @@ class Tokenizer:
 			# BLOCKING 2: Remove token if it contains , . or !
 			# BLOCKING 3: Remove token if freq across all documents > threshold
 			if allWordsCapitalized(token) and not self._has_special_char(token):
-				# if not self._has_more_than_threshold_freq(token):
-				# 	self.filtered_tokens.append((fid, token, tpos, tlabel))
-				self.filtered_tokens.append((fid, token, tpos, tlabel))
+				if not self._has_more_than_threshold_freq(token):
+					self.filtered_tokens.append((fid, token, tpos, tlabel))
 
 		return self.filtered_tokens
 
@@ -180,7 +179,7 @@ class Tokenizer:
 			token_vector['isPartial'] = int(isPartial(tpos, fcontents, token))
 			token_vector['hasPartialNameOccurence'] = int(hasPartialNameOccurence(tpos, fcontents, token))
 			token_vector['hasFullNameOccurence'] = int(hasFullNameOccurence(tpos, fcontents, token))
-			token_vector['isLocation'] = int(isLocation(tpos, fcontents))
+			token_vector['hasPreposition'] = int(hasPreposition(tpos, fcontents))
 			token_vector['isPrecededByOccupationWords'] = int(isPrecededByOccupationWords(tpos, fcontents)[0])
 			token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
 			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
@@ -207,6 +206,7 @@ class Tokenizer:
 			token_vector['containsCommonWord'] = int(containsCommonWord(token))
 			token_vector['isCommonName'] = int(isCommonName(token))
 			token_vector['allCharactersCapitalized'] = int(allCharactersCapitalized(token))
+			token_vector['isLocation'] = int(isLocation(token))
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
