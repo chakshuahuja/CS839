@@ -156,8 +156,8 @@ class Tokenizer:
 			if allWordsCapitalized(token) and not self._has_special_char(token):
 				if not self._has_more_than_threshold_freq(token):
 					self.filtered_tokens.append((fid, token, tpos, tlabel))
-				else:
-					print(token, self.freq_tokens.get(token))
+				# else:
+				# 	print(token, self.freq_tokens.get(token))
 				# self.filtered_tokens.append((fid, token, tpos, tlabel))
 		return self.filtered_tokens
 
@@ -240,7 +240,7 @@ for i in range(1, 301):
 	[all_data.append(v) for v in d]
 	all_pos += p
 	all_neg += n
-	print(len(all_data), all_pos, all_neg)
+print(len(all_data), all_pos, all_neg)
 
 # print(len(all_data), all_pos, all_neg)
 
