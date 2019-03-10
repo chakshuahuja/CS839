@@ -10,13 +10,14 @@ from sklearn import linear_model
 
 from sklearn.model_selection import StratifiedKFold
 
-c_names = {
-	"DT" : "Decision Tree",
-	"RF" : "Random Forest",
-	"SVM" : "Support Vector",
-	"LR" : "Linear Regression",
-	"LOR" : "Logistic Regression",
-	"NN" : "Neural Network"
+
+CLF = {
+	"DT" : {"name": "Decision Tree"},
+	"RF" : {"name": "Random Forest"},
+	"SVM" : {"name": "Support Vector"},
+	"LR" : {"name": "Linear Regression"},
+	"LOR" : {"name": "Logistic Regression"},
+	"NN" : {"name": "Neural Network"}
 }
 
 class Classifiers:
@@ -77,7 +78,7 @@ class Classifiers:
 		return (precision_recall_fscore_support(yts, y_pred, average='binary'))
 
 	def print_results(self, clf, result):
-		print("{classifier: <20} {precision:.5f} {recall:.5f}".format(classifier=c_names[clf], precision=result[0], recall=result[1]))
+		print("{classifier: <20} {precision:.5f} {recall:.5f}".format(classifier=CLF[clf]["name"], precision=result[0], recall=result[1]))
 
 	def run_kfold(self, classifier):
 		print('Running K Fold')
@@ -123,8 +124,8 @@ class Classifiers:
 		if classifier == "LOR": self.print_results("LOR", self.logistic_regression(self.X_train, self.X_test, self.y_train, self.y_test))
 
 
-# clf = Classifiers("train.csv", "test.csv")
-# print("{0: <20} {1} {2}".format("Classifer", "Precision", "Recall"))
-# print()
-# for classifier in [DT, SVM, RF, NN, LOR, LR]:
-# 	clf.run(classifier)
+clf = Classifiers("train.csv", "test.csv")
+print("{0: <20} {1} {2}".format("Classifer", "Precision", "Recall"))
+print()
+for classifier in ["NN"]:
+	clf.run(classifier)
