@@ -13,6 +13,8 @@ band
 movie
 film
 show
+pictures
+picture
 orchestra
 location
 company

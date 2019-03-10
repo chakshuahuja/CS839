@@ -6,27 +6,4 @@ The Producers won three prizes at the UK's most prestigious annual theatre award
 
 The Producers' <b>Nathan Lane</b>, a last-minute replacement for <b>Richard Dreyfuss</b>, beat his former co-star <b>Lee Evans</b> to win best musical actor. <b>Lane</b> has already left the production. A smash hit on Broadway before moving to London, the show also won best musical performance in a supporting role for <b>Conleth Hill</b>, who plays director <b>Roger DeBris</b>. Mary Poppins' awards came for best choreography and best musical actress for its star <b>Laura Michelle Kelly</b>. It led the nominations going into Sunday's ceremony at London's Hilton hotel, up for nine awards. Both shows are stage adaptations of 1960s films. The History Boys, set in a grammar school in the early 1980s and partly based on <b>Bennett's</b> experiences as a teacher, was named best new play.
 
-It also won best actor for <b>Richard Griffiths</b>, who beat his Harry Potter film co-star <b>Michael Gambon</b>, nominated for Endgame, as well as <b>Jonathan Pryce</b> and <b>Ben Whishaw</b>. The play also won National Theatre artistic director <b>Nicholas Hytner</b> best director and Bennett got a special award for outstanding contribution to British theatre. <b>Dame Judi Dench</b>, who starred in All's Well That Ends Well at the Gielgud, lost out in the best supporting role category to Amanda Harris, who played <b>Emilia</b> in Othello for the Royal Shakespeare Company. The Olivier Awards have been handed out by the Society of London since 1976.
-
-- Best lighting design - His Dark Materials designed by <b>Paule Constable</b> at the Olivier 
- - Best sound design - The Woman in White designed by <b>Mick Potter</b> at the Palace 
- - Best new opera - Lady Macbeth of Mtsensk at the Royal Opera House 
- - Outstanding achievement in opera - <b>Thomas Ades</b> and the Royal Opera House for the world premiere of The Tempest 
- - Best costume design - All's Well That Ends Well designed by <b>Deirdre Clancy</b> at the Gielgud 
- - Best Revival - Hamlet by <b>William Shakespeare</b> at The Old Vic 
- - Best set design - His Dark Materials designed by <b>Giles Cadle</b> at the Olivier 
- - Outstanding musical production - Grand Hotel at the Donmar Warehouse 
- - Best supporting role in a musical - Conleth Hill for The Producers at Theatre Royal, Drury Lane 
- - Best theatre choreographer - <b>Matthew Bourne</b> and <b>Stephen Mear</b> for Mary Poppins at the Prince Edward 
- - Best actor - <b>Richard Griffiths</b> for The History Boys at the Lyttelton 
- - Outstanding achievement or performance in an affiliate theatre - <b>Andrew Scott</b> for A Girl in A Car With A Man at the Jerwood Theatre Upstairs at the Royal Court 
- - Best new dance production - Rambert Dance Company's Swamp at Sadler's Wells 
- - Outstanding achievement in dance - San Francisco Ballet for their season at Sadler's Wells 
- - Best performance in a supporting role - <b>Amanda Harris</b> for Othello at Trafalgar Studios 
- - Best actress - <b>Clare Higgins</b> for Hecuba at the Donmar Warehouse 
- - Best musical actor - <b>Nathan Lane</b> for The Producers at Theatre Royal, Drury Lane 
- - Best musical actress - <b>Laura Michelle Kelly</b> for Mary Poppins at the Prince Edward 
- - Best director - <b>Nicholas Hytner</b> for The History Boys at the Lyttelton 
- - Best new play - The History Boys by Alan Bennett at the Lyttelton 
- - Best new musical - The Producers at Theatre Royal, Drury Lane 
- - Special award - <b>Alan Bennett</b> for his outstanding contribution to British theatre
+It also won best actor for <b>Richard Griffiths</b>, who beat his Harry Potter film co-star <b>Michael Gambon</b>, nominated for Endgame, as well as <b>Jonathan Pryce</b> and <b>Ben Whishaw</b>. The play also won National Theatre artistic director <b>Nicholas Hytner</b> best director and <b>Bennett</b> got a special award for outstanding contribution to British theatre. <b>Dame Judi Dench</b>, who starred in All's Well That Ends Well at the Gielgud, lost out in the best supporting role category to <b>Amanda Harris</b>, who played <b>Emilia</b> in Othello for the Royal Shakespeare Company. The Olivier Awards have been handed out by the Society of London since 1976.

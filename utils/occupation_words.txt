@@ -18,6 +18,7 @@ assistant
 manager
 player
 dancer
+singers
 butler
 owner
 name
@@ -29,6 +30,7 @@ musician
 star
 host
 chair
+absolute
 stars
 producer
 judge
@@ -51,6 +53,8 @@ cowriter
 cast
 featuring
 introducing
+cinema
+movie
 starring
 late
 legend
