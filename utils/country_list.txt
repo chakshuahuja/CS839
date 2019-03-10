@@ -20,6 +20,8 @@ Mexican
 Dutch
 German
 French
+Chinese
+Japanese
 Belize
 Benin
 Bhutan
