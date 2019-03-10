@@ -105,10 +105,12 @@ Jordan
 Kazakhstan
 Kenya
 Kiribati
-"Korea, North"
-"Korea, South"
+North Korea
+South Korea
+Korea
 Kuwait
 Kyrgyzstan
+Santa Barbara
 Laos
 Latvia
 Lebanon
@@ -201,6 +203,7 @@ Uganda
 Ukraine
 United Arab Emirates
 United Kingdom
+Florida
 United States
 Uruguay
 Uzbekistan
