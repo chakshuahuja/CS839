@@ -182,14 +182,14 @@ class Tokenizer:
 			token_vector['precedingOccupationWordDistance'] = int(isPrecededByOccupationWords(tpos,fcontents)[1])  #this seems to be degrading performance
 			token_vector['isSucceededByOccupationWords'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[0])
 			token_vector['succeededByOccupationWordDistance'] = int(isSucceededByOccupationWords(tpos, fcontents, token)[1])
-			# # token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
+			token_vector['allWordsCapitalized'] = int(allWordsCapitalized(token))
 			# # token_vector['areMoreEntitiesPresentInSentence'] = int(areMoreEntitiesPresentInSentence(tpos, fcontents, token))
 			token_vector['endsWithApostropheS'] = int(endsWithApostropheS(token))
-			token_vector['endsWithComma'] = int(endsWithComma(token))
+			# token_vector['endsWithComma'] = int(endsWithComma(token))
 			token_vector['numWords'] = int(len(token.split()))
 			token_vector['totalLength'] = int(len(token))
-			token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
-			token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
+			# token_vector['lineContainsPronoun'] = int(lineContainsPronoun(tpos, fcontents))
+			# token_vector['nextLineContainsPronoun'] = int(nextLineContainsPronoun(tpos, fcontents))
 			token_vector['isPreceededByFamilyRelation'] = int(isPreceededByFamilyRelation(tpos, fcontents))
 			token_vector['isFollowedByFamilyRelation'] = int(isFollowedByFamilyRelation(tpos, fcontents))
 			token_vector['isNearStatementWord'] = int(isNearStatementWord(tpos, fcontents))
@@ -216,77 +216,25 @@ class Tokenizer:
 
 
 
-# TOTAL_FILE_COUNT = 300
-# TRAIN_FILE_COUNT = 200
-# TEST_FILE_COUNT = 100
+TOTAL_FILE_COUNT = 300
+TRAIN_FILE_COUNT = 200
+TEST_FILE_COUNT = 100
 
-# import random
-# train_files = random.sample(range(1, TOTAL_FILE_COUNT+1), TRAIN_FILE_COUNT)
-# test_files = list(set(list(range(1, TOTAL_FILE_COUNT+1))) - set(train_files))
-# print(train_files, test_files)
-# assert(len(test_files) == TEST_FILE_COUNT)
-
-
-# def getData():
-# 	TRAIN_DATA = []
-# 	TRAIN_POS, TRAIN_NEG = 0, 0
-
-# 	TEST_DATA = []
-# 	TEST_POS, TEST_NEG = 0, 0
-
-# 	for i in range(1, TOTAL_FILE_COUNT+1):
-# 		fname = ""
-# 		if i < 10:
-# 			fname = "00" + str(i)
-# 		elif i >= 10 and i < 100:
-# 			fname = "0" + str(i)
-# 		else:
-# 			fname = str(i)
-# 		# print(fname)
-# 		F = Tokenizer("labelled/" + fname + ".txt")
-# 		F.tokenize()
-# 		F.filter_tokens()
-
-# 		# F.print_tokens()
-
-# 		d, p, n = F.vectorize()
-# 		# print('Calling Test', test(d))
-# 		for v in d:
-# 			if int(v['fid']) in train_files:
-# 				TRAIN_DATA.append(v)
-# 			else:
-# 				TEST_DATA.append(v)
-
-# 		if int(v['fid']) in train_files:
-# 			TRAIN_POS += p
-# 			TRAIN_NEG += n
-# 		else:
-# 			TEST_POS += p
-# 			TEST_NEG += n
+import random
+train_files = random.sample(range(1, TOTAL_FILE_COUNT+1), TRAIN_FILE_COUNT)
+test_files = list(set(list(range(1, TOTAL_FILE_COUNT+1))) - set(train_files))
+print(train_files, test_files)
+assert(len(test_files) == TEST_FILE_COUNT)
 
 
-# 	print('Train Data: ', len(TRAIN_DATA))
-# 	print('Train Pos: ', TRAIN_POS)
-# 	print('Train Neg: ', TRAIN_NEG)
+def getData():
+	TRAIN_DATA = []
+	TRAIN_POS, TRAIN_NEG = 0, 0
 
-# 	print('Test Data: ', len(TEST_DATA))
-# 	print('Test Pos: ', TEST_POS)
-# 	print('Test Neg: ', TEST_NEG)
+	TEST_DATA = []
+	TEST_POS, TEST_NEG = 0, 0
 
-# 	return TRAIN_DATA, TEST_DATA
-
-# train_data, test_data = getData()
-# train_df = pd.DataFrame(train_data)
-# train_df.to_csv("train.csv")
-
-# test_df = pd.DataFrame(test_data)
-# test_df.to_csv("test.csv")
-
-def getData(startIndex, endIndex):
-	all_data = []
-	all_pos = 0
-	all_neg = 0
-	for i in range(startIndex, endIndex + 1):
+	for i in range(1, TOTAL_FILE_COUNT+1):
 		fname = ""
 		if i < 10:
 			fname = "00" + str(i)
@@ -303,17 +251,69 @@ def getData(startIndex, endIndex):
 
 		d, p, n = F.vectorize()
 		# print('Calling Test', test(d))
-		[all_data.append(v) for v in d]
-		all_pos += p
-		all_neg += n
-	print(len(all_data), all_pos, all_neg)
+		for v in d:
+			if int(v['fid']) in train_files:
+				TRAIN_DATA.append(v)
+			else:
+				TEST_DATA.append(v)
 
-	# print(len(all_data), all_pos, all_neg)
-	return all_data
+		if int(v['fid']) in train_files:
+			TRAIN_POS += p
+			TRAIN_NEG += n
+		else:
+			TEST_POS += p
+			TEST_NEG += n
 
-train_df = pd.DataFrame(getData(101, 300))
+
+	print('Train Data: ', len(TRAIN_DATA))
+	print('Train Pos: ', TRAIN_POS)
+	print('Train Neg: ', TRAIN_NEG)
+
+	print('Test Data: ', len(TEST_DATA))
+	print('Test Pos: ', TEST_POS)
+	print('Test Neg: ', TEST_NEG)
+
+	return TRAIN_DATA, TEST_DATA
+
+train_data, test_data = getData()
+train_df = pd.DataFrame(train_data)
 train_df.to_csv("train.csv")
 
-test_df = pd.DataFrame(getData(1, 100))
+test_df = pd.DataFrame(test_data)
 test_df.to_csv("test.csv")
+
+# def getData(startIndex, endIndex):
+# 	all_data = []
+# 	all_pos = 0
+# 	all_neg = 0
+# 	for i in range(startIndex, endIndex + 1):
+# 		fname = ""
+# 		if i < 10:
+# 			fname = "00" + str(i)
+# 		elif i >= 10 and i < 100:
+# 			fname = "0" + str(i)
+# 		else:
+# 			fname = str(i)
+# 		# print(fname)
+# 		F = Tokenizer("labelled/" + fname + ".txt")
+# 		F.tokenize()
+# 		F.filter_tokens()
+
+# 		# F.print_tokens()
+
+# 		d, p, n = F.vectorize()
+# 		# print('Calling Test', test(d))
+# 		[all_data.append(v) for v in d]
+# 		all_pos += p
+# 		all_neg += n
+# 	print(len(all_data), all_pos, all_neg)
+
+# 	# print(len(all_data), all_pos, all_neg)
+# 	return all_data
+
+# train_df = pd.DataFrame(getData(101, 300))
+# train_df.to_csv("train.csv")
+
+# test_df = pd.DataFrame(getData(1, 100))
+# test_df.to_csv("test.csv")
 
