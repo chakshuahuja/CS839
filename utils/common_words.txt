@@ -11,6 +11,8 @@ people
 christmas
 enterprise
 dvd
+working
+title
 tv
 got
 grammy
@@ -139,13 +141,19 @@ build
 building
 business
 but
+butterfly
+awards
 buy
 by
+fox
+athlete
 call
+eternal
 camera
 campaign
 can
 cancer
+day
 candidate
 capital
 car
@@ -154,6 +162,9 @@ care
 career
 carry
 case
+house
+vera
+drake
 castle
 catch
 cause
@@ -318,6 +329,7 @@ fall
 family
 far
 fast
+fat
 father
 fear
 federal
@@ -469,6 +481,7 @@ kitchen
 know
 knowledge
 land
+island
 language
 large
 last
@@ -549,6 +562,7 @@ mind
 minute
 miss
 mission
+idol
 model
 modern
 moment

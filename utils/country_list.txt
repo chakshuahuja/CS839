@@ -16,6 +16,10 @@ Bangladesh
 Barbados
 Belarus
 Belgium
+Mexican
+Dutch
+German
+French
 Belize
 Benin
 Bhutan
@@ -28,6 +32,10 @@ Bulgaria
 Burkina Faso
 Burundi
 Cambodia
+America
+US
+USA
+United States
 Cameroon
 Canada
 Cape Verde
@@ -55,6 +63,8 @@ Egypt
 El Salvador
 Equatorial Guinea
 Eritrea
+England
+London
 Estonia
 Ethiopia
 Fiji
@@ -63,6 +73,9 @@ France
 Gabon
 Gambia
 Georgia
+British
+Americans
+Indian
 Germany
 Ghana
 Greece
@@ -72,6 +85,7 @@ Guinea
 Guinea-Bissau
 Guyana
 Haiti
+Hong kong
 Honduras
 Hungary
 Iceland
