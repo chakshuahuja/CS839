@@ -3,7 +3,7 @@
 Usage:
     main.py [--shuffle]
     main.py -h | --help
-    main.py run [<classifiers>]
+    main.py run [<classifiers>] [--shuffle]
 
 Options:
     -h --help  : Generates test and train data for files from 1-200 and 201-300 by default.
