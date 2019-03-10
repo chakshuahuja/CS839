@@ -243,8 +243,8 @@ def getData(startIndex, endIndex):
 	# print(len(all_data), all_pos, all_neg)
 	return all_data
 
-train_df = pd.DataFrame(getData(1, 200))
+train_df = pd.DataFrame(getData(101, 300))
 train_df.to_csv("train.csv")
 
-test_df = pd.DataFrame(getData(201, 300))
+test_df = pd.DataFrame(getData(1, 100))
 test_df.to_csv("test.csv")

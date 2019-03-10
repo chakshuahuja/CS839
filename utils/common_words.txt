@@ -266,6 +266,8 @@ discuss
 discussion
 disease
 do
+dont
+channel
 doctor
 dog
 door
