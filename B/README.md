@@ -1,6 +1,6 @@
 
-Marked Entity Type: Person Names
+Marked Entity Type: <b>Person Names</b>
 
-Tags Used: <b> to denote start and </b> to denote end
+Tags Used: <b>&lt;b&gt;</b> to denote start and <b>&lt;/b&gt;</b> to denote end
 
-Eg, <b>Chakshu</b>, <b>Geetika</b> and <b>Swati</b> are working together on Data Science project.
+Eg, &lt;b&gt;Chakshu&lt;/b&gt;, &lt;b&gt;Geetika&lt;/b&gt; and &lt;b&gt;Swati&lt;/b&gt; are working together on Data Science project.
