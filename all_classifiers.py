@@ -20,9 +20,14 @@ ALL = "All"
 
 class Classifers:
 
-	def __init__(self, fname):
-		self.input_data = pd.read_csv(fname)
-		self.X_train, self.X_test, self.y_train, self.y_test = None, None, None, None
+	def __init__(self, train_fname, test_fname):
+		self.input_data = pd.read_csv(train_fname)
+		self.test_data = pd.read_csv(test_fname)
+		self.X_train = self.input_data.drop(['label', 'Unnamed: 0', 'position', 'token', 'fid'], axis=1)
+		self.y_train = self.input_data[['label']]
+
+		self.X_test = self.test_data.drop(['label', 'Unnamed: 0', 'position', 'token', 'fid'], axis=1)
+		self.y_test = self.test_data[['label']]
 
 	def decision_tree(self):
 		clf = DecisionTreeClassifier(criterion="entropy")
@@ -68,11 +73,8 @@ class Classifers:
 	def print_results(self, clf, result):
 		print("{classifier} {precision} {recall}".format(classifier=clf, precision=result[0], recall=result[1]))
 
-	def run(self, classifier):
-		X = self.input_data.drop(['label', 'Unnamed: 0', 'position', 'token', 'fid'], axis=1)
-		y = self.input_data[['label']]
-		
-		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.33)
+	def run(self, classifier):		
+		# self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.33)
 
 		# smote = SMOTE()
 		# self.X_train, self.y_train = smote.fit_sample(self.X_train, self.y_train)
@@ -86,6 +88,7 @@ class Classifers:
 		if classifier == LR: self.print_results(LR, self.linear_regression())
 		if classifier == LOR: self.print_results(LOR, self.logistic_regression())
 
-clf = Classifers("data.csv")
+
+clf = Classifers("train.csv", "test.csv")
 for classifier in [DT, SVM, RF, NN, LR, LOR]:	
 	clf.run(classifier)
