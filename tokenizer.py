@@ -230,6 +230,15 @@ class Tokenizer:
 		return data, pos, neg
 
 
+def get_file_name(i):
+	fname = ""
+	if i < 10:
+		fname = "00" + str(i)
+	elif i >= 10 and i < 100:
+		fname = "0" + str(i)
+	else:
+		fname = str(i)
+	return fname
 
 TOTAL_FILE_COUNT = 300
 TRAIN_FILE_COUNT = 200
@@ -256,14 +265,7 @@ def generateShuffledData():
 		TEST_POS, TEST_NEG = 0, 0
 
 		for i in range(1, TOTAL_FILE_COUNT+1):
-			fname = ""
-			if i < 10:
-				fname = "00" + str(i)
-			elif i >= 10 and i < 100:
-				fname = "0" + str(i)
-			else:
-				fname = str(i)
-			# print(fname)
+			fname = get_file_name(i)
 			F = Tokenizer("labelled/" + fname + ".txt")
 			F.tokenize()
 			F.filter_tokens()
@@ -271,7 +273,6 @@ def generateShuffledData():
 			# F.print_tokens()
 
 			d, p, n = F.vectorize()
-			# print('Calling Test', test(d))
 			for v in d:
 				if int(v['fid']) in train_files:
 					TRAIN_DATA.append(v)
@@ -311,14 +312,8 @@ def generateFixedData():
 		all_pos = 0
 		all_neg = 0
 		for i in range(startIndex, endIndex + 1):
-			fname = ""
-			if i < 10:
-				fname = "00" + str(i)
-			elif i >= 10 and i < 100:
-				fname = "0" + str(i)
-			else:
-				fname = str(i)
-			# print(fname)
+			fname = get_file_name(i)
+			print(fname)
 			F = Tokenizer("labelled/" + fname + ".txt")
 			F.tokenize()
 			F.filter_tokens()
@@ -326,7 +321,6 @@ def generateFixedData():
 			# F.print_tokens()
 
 			d, p, n = F.vectorize()
-			# print('Calling Test', test(d))
 			[all_data.append(v) for v in d]
 			all_pos += p
 			all_neg += n
