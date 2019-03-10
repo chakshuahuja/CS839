@@ -37,8 +37,8 @@ def is_only_title(token):
 	if len(token.split(' ')) == 1:
 		word = removeSpecialCharacter(token)
 		if word.lower() in titles:
-			return False
-	return True
+			return True
+	return False
 
 def removeApostrophS(word):
 	word = word.replace("'s", "")
@@ -106,7 +106,7 @@ def isPrecededByBy(offset, text):
 
 def allCharactersCapitalized(token):
 	token = removeSpecialCharacter(removeApostrophS(token))
-	if token[-1] == 's':
+	if len(token) > 1 and token[-1] == 's':
 		token = token[:-1]
 	return all([c.isupper() for c in token]) and len(token) > 1
 
