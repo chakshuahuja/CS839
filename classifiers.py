@@ -23,7 +23,7 @@ def isMixOfAlphabetsAndNumbers(token):
 					numbers = numbers + 1
 			
 		if alphabets > 0 and numbers > 0:
-			print(token)
+			# print(token)
 			return True
 	return False
 
@@ -33,7 +33,7 @@ def areAllWordsCapitalized(token):
 		for i in range(len(word)):
 			if (word[i].isalpha() and word[i].islower()):
 				return False
-	print(token)
+	# print(token)
 	return True	
 
 # Reads from data.csv file generated
@@ -86,16 +86,17 @@ print(count_false, count_true)
 
 false_result = []
 result = X_test.values
-print(isLocation('New York'))
+# print(isLocation('New York'))
 for i in range(len(result)):
 	length = len(result[i])
-	if result[i][length - 1] == True and result[i][length - 2] == False:
+	if (isMixOfAlphabetsAndNumbers(result[i][length - 4]) or areAllWordsCapitalized(result[i][length - 4]) or isLocation(result[i][length-4]) or containsCommonWord(result[i][length-4])):
+		result[i][length - 1] = False
+		y_pred[i] = False
+		print(result[i][length - 4])
 		
-		if (isMixOfAlphabetsAndNumbers(result[i][length - 4]) or areAllWordsCapitalized(result[i][length - 4]) or isLocation(result[i][length-4]) or containsCommonWord(result[i][length-4])):
-			result[i][length - 1] = False
-			y_pred[i] = False
-		else:
-			false_result.append(result[i])
+
+	if result[i][length - 1] == True and result[i][length - 2] == False:
+		false_result.append(result[i])
 		
 
 count_true = 0

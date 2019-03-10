@@ -216,25 +216,77 @@ class Tokenizer:
 
 
 
-TOTAL_FILE_COUNT = 300
-TRAIN_FILE_COUNT = 200
-TEST_FILE_COUNT = 100
+# TOTAL_FILE_COUNT = 300
+# TRAIN_FILE_COUNT = 200
+# TEST_FILE_COUNT = 100
 
-import random
-train_files = random.sample(range(1, TOTAL_FILE_COUNT+1), TRAIN_FILE_COUNT)
-test_files = list(set(list(range(1, TOTAL_FILE_COUNT+1))) - set(train_files))
-print(train_files, test_files)
-assert(len(test_files) == TEST_FILE_COUNT)
+# import random
+# train_files = random.sample(range(1, TOTAL_FILE_COUNT+1), TRAIN_FILE_COUNT)
+# test_files = list(set(list(range(1, TOTAL_FILE_COUNT+1))) - set(train_files))
+# print(train_files, test_files)
+# assert(len(test_files) == TEST_FILE_COUNT)
 
 
-def getData():
-	TRAIN_DATA = []
-	TRAIN_POS, TRAIN_NEG = 0, 0
+# def getData():
+# 	TRAIN_DATA = []
+# 	TRAIN_POS, TRAIN_NEG = 0, 0
 
-	TEST_DATA = []
-	TEST_POS, TEST_NEG = 0, 0
+# 	TEST_DATA = []
+# 	TEST_POS, TEST_NEG = 0, 0
 
-	for i in range(1, TOTAL_FILE_COUNT+1):
+# 	for i in range(1, TOTAL_FILE_COUNT+1):
+# 		fname = ""
+# 		if i < 10:
+# 			fname = "00" + str(i)
+# 		elif i >= 10 and i < 100:
+# 			fname = "0" + str(i)
+# 		else:
+# 			fname = str(i)
+# 		# print(fname)
+# 		F = Tokenizer("labelled/" + fname + ".txt")
+# 		F.tokenize()
+# 		F.filter_tokens()
+
+# 		# F.print_tokens()
+
+# 		d, p, n = F.vectorize()
+# 		# print('Calling Test', test(d))
+# 		for v in d:
+# 			if int(v['fid']) in train_files:
+# 				TRAIN_DATA.append(v)
+# 			else:
+# 				TEST_DATA.append(v)
+
+# 		if int(v['fid']) in train_files:
+# 			TRAIN_POS += p
+# 			TRAIN_NEG += n
+# 		else:
+# 			TEST_POS += p
+# 			TEST_NEG += n
+
+
+# 	print('Train Data: ', len(TRAIN_DATA))
+# 	print('Train Pos: ', TRAIN_POS)
+# 	print('Train Neg: ', TRAIN_NEG)
+
+# 	print('Test Data: ', len(TEST_DATA))
+# 	print('Test Pos: ', TEST_POS)
+# 	print('Test Neg: ', TEST_NEG)
+
+# 	return TRAIN_DATA, TEST_DATA
+
+# train_data, test_data = getData()
+# train_df = pd.DataFrame(train_data)
+# train_df.to_csv("train.csv")
+
+# test_df = pd.DataFrame(test_data)
+# test_df.to_csv("test.csv")
+
+def getData(startIndex, endIndex):
+	all_data = []
+	all_pos = 0
+	all_neg = 0
+	for i in range(startIndex, endIndex + 1):
 		fname = ""
 		if i < 10:
 			fname = "00" + str(i)
@@ -251,34 +303,17 @@ def getData():
 
 		d, p, n = F.vectorize()
 		# print('Calling Test', test(d))
-		for v in d:
-			if int(v['fid']) in train_files:
-				TRAIN_DATA.append(v)
-			else:
-				TEST_DATA.append(v)
+		[all_data.append(v) for v in d]
+		all_pos += p
+		all_neg += n
+	print(len(all_data), all_pos, all_neg)
 
-		if int(v['fid']) in train_files:
-			TRAIN_POS += p
-			TRAIN_NEG += n
-		else:
-			TEST_POS += p
-			TEST_NEG += n
+	# print(len(all_data), all_pos, all_neg)
+	return all_data
 
-
-	print('Train Data: ', len(TRAIN_DATA))
-	print('Train Pos: ', TRAIN_POS)
-	print('Train Neg: ', TRAIN_NEG)
-
-	print('Test Data: ', len(TEST_DATA))
-	print('Test Pos: ', TEST_POS)
-	print('Test Neg: ', TEST_NEG)
-
-	return TRAIN_DATA, TEST_DATA
-
-train_data, test_data = getData()
-train_df = pd.DataFrame(train_data)
+train_df = pd.DataFrame(getData(101, 300))
 train_df.to_csv("train.csv")
 
-test_df = pd.DataFrame(test_data)
+test_df = pd.DataFrame(getData(1, 100))
 test_df.to_csv("test.csv")
 
