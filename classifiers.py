@@ -11,11 +11,15 @@ from sklearn import svm
 # Reads from data.csv file generated
 # TODO: read from the newly generated file every time at time of submission.
 
-input_data = pd.read_csv("data.csv")
-X = input_data.drop(['label', 'Unnamed: 0'], axis=1)
-y = input_data[['label']]
+input_data = pd.read_csv("train.csv")
+X_train = input_data.drop(['label', 'Unnamed: 0'], axis=1)
+y_train = input_data[['label']]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+test_data = pd.read_csv("test.csv")
+X_test = input_data.drop(['label', 'Unnamed: 0'], axis=1)
+y_test = input_data[['label']]
+
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 #Neural Net
 clf = MLPClassifier(solver='adam', activation='relu', alpha=0.0001, hidden_layer_sizes=(15,15), random_state=42, max_iter=500, verbose=True)
