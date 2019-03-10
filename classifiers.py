@@ -5,6 +5,7 @@ from sklearn.metrics import precision_recall_fscore_support, classification_repo
 from imblearn.over_sampling import SMOTE
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.utils import shuffle
 
 from sklearn import svm
 
@@ -12,12 +13,13 @@ from sklearn import svm
 # TODO: read from the newly generated file every time at time of submission.
 
 input_data = pd.read_csv("train.csv")
+input_data = shuffle(input_data)
 X_train = input_data.drop(['label', 'Unnamed: 0'], axis=1)
 y_train = input_data[['label']]
 
 test_data = pd.read_csv("test.csv")
-X_test = input_data.drop(['label', 'Unnamed: 0'], axis=1)
-y_test = input_data[['label']]
+X_test = test_data.drop(['label', 'Unnamed: 0'], axis=1)
+y_test = test_data[['label']]
 
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
