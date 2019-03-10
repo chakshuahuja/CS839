@@ -213,38 +213,3 @@ class Tokenizer:
 			data.append(token_vector)
 
 		return data, pos, neg
-
-def getData(startIndex, endIndex):
-	all_data = []
-	all_pos = 0
-	all_neg = 0
-	for i in range(startIndex, endIndex + 1):
-		fname = ""
-		if i < 10:
-			fname = "00" + str(i)
-		elif i >= 10 and i < 100:
-			fname = "0" + str(i)
-		else:
-			fname = str(i)
-		# print(fname)
-		F = Tokenizer("labelled/" + fname + ".txt")
-		F.tokenize()
-		F.filter_tokens()
-
-		# F.print_tokens()
-
-		d, p, n = F.vectorize()
-		# print('Calling Test', test(d))
-		[all_data.append(v) for v in d]
-		all_pos += p
-		all_neg += n
-	print(len(all_data), all_pos, all_neg)
-
-	# print(len(all_data), all_pos, all_neg)
-	return all_data
-
-train_df = pd.DataFrame(getData(101, 300))
-train_df.to_csv("train.csv")
-
-test_df = pd.DataFrame(getData(1, 100))
-test_df.to_csv("test.csv")
