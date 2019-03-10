@@ -3,6 +3,7 @@
 Usage:
     main.py [--shuffle]
     main.py -h | --help
+    main.py run [<classifiers>]
 
 Options:
     -h --help  : Generates test and train data for files from 1-200 and 201-300 by default.
@@ -12,8 +13,10 @@ Options:
 
 from docopt import docopt
 import random
-from tokenizer import Tokenizer
 import pandas as pd
+
+from tokenizer import Tokenizer
+from all_classifiers import Classifiers
 
 def get_file_name(i):
 	fname = ""
@@ -137,6 +140,17 @@ def main(docopt_args):
 			test data from files indexed 1-100 (in folder J).
 		""")
 		generateFixedData()
+
+	if docopt_args["run"]:
+		classifiers_args = docopt_args.get("<classifiers>")
+		classifiers = [c.strip() for c in classifiers_args.split(',')] if classifiers_args else ["NN", "RF", "SVM", "DT", "LOR", "LR"]
+
+		clf = Classifiers("train.csv", "test.csv")
+		print()
+		print("{0: <20} {1} {2}".format("Classifer", "Precision", "Recall"))
+		print()
+		for classifier in classifiers:
+			clf.run(classifier)
 
 if __name__ == "__main__":
 	args = docopt(__doc__)
