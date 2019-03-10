@@ -9,3 +9,5 @@ Reverend
 Prof
 Capt
 Col
+King
+Queen

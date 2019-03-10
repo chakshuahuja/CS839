@@ -1054,6 +1054,7 @@ spring
 autumn
 sunday
 monday
+soldier
 tuesday
 wednesday
 wedding
@@ -1064,6 +1065,7 @@ january
 february
 march
 beach
+tourist
 ocean
 university
 snow
@@ -1078,6 +1080,8 @@ may
 june
 july
 god
+boys
+girls
 twelve
 globe
 august
