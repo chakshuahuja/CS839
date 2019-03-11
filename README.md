@@ -42,6 +42,8 @@ test files (I-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/maste
 ```
 python3 main.py --shuffle
 ```
+![Shuffle on B to generate I and J](images/shuffle.jpg?raw=true "Shuffle on B to generate I and J")
+
 
 #### Generating and Running the result on the classifiers
 ```
