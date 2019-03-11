@@ -9,6 +9,8 @@ Testing Documents: [Set J](https://github.com/chakshuahuja/CS839/tree/master/J)
 [Code](https://github.com/chakshuahuja/CS839)
 
 ### Setup:
+Install the requirements mentioned in `requirements.txt` (`docopt`, `pandas` and `sklearn`)
+or you have `pip` setup, you may do `pip install --user -r requirements.txt`
 
 In order to run the code,
 ```
