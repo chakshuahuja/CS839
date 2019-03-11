@@ -36,13 +36,13 @@ python3 main.py
 ```
 This only generates `train.csv` and `test.csv` files containing the feature vectors of training and testing data.
 Note: The training data is generated from train files (101-300 in folder [I](https://github.com/chakshuahuja/CS839/tree/master/I)) and testing data is generated from
-test files (I-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/master/J))
+test files (1-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/master/J))
 
 ###### (Optional) Generating the training and test data feature vector if you want to generate the train and test by randomly choosing 200/100 train/test files rather than fixed from I and J):
 ```
 python3 main.py --shuffle
 ```
-![Shuffle on B to generate I and J](images/shuffle.jpg?raw=true "Shuffle on B to generate I and J")
+![Shuffle on B to generate I and J](images/shuffle.png?raw=true "Shuffle on B to generate I and J")
 
 
 #### Generating and Running the result on the classifiers
