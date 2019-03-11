@@ -139,13 +139,13 @@ def main(docopt_args):
 			Generating train and test data by choosing random 200 files for training and 100 files for testing
 			from folder B (containing all 300 files).
 		""")
-		#generateShuffledData()
+		generateShuffledData()
 	else:
 		print("""
 			Generating train data from files indexed 101-300 (in folder I) and
 			test data from files indexed 1-100 (in folder J).
 		""")
-		#generateFixedData()
+		generateFixedData()
 
 	if docopt_args["run"] and not docopt_args["--kfold"]:
 		classifiers_args = docopt_args.get("<classifiers>")
