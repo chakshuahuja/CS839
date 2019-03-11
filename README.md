@@ -50,7 +50,7 @@ python3 main.py --shuffle
 ![Shuffle on B to generate I and J](images/shuffle.png?raw=true "Shuffle on B to generate I and J")
 
 
-#### Running on the classifiers
+#### Running on all the classifiers
 ```
 python3 main.py run
 ```
