@@ -8,7 +8,7 @@ Testing Documents: [Set J](https://github.com/chakshuahuja/CS839/tree/master/J)
 
 [Code](https://github.com/chakshuahuja/CS839)
 
-Setup:
+### Setup:
 
 In order to run the code,
 ```
@@ -17,7 +17,7 @@ In order to run the code,
 This will install the requirements (mentioned in `requirements.txt` file), tokenize (on training data I and testing data J)
 and run on Neural Network Classifier.
 
-API Documentation:
+### API Documentation:
 
 ```
 CS839 (Stage 1) API
