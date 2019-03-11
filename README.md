@@ -39,10 +39,11 @@ Note: The training data is generated from train files (101-300 in folder [I](htt
 test files (1-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/master/J))
 
 ###### (Optional) Generating the training and test data feature vector if you want to generate the train and test by randomly choosing 200/100 train/test files rather than fixed from I and J):
-```
+
 
 ![Generate I and J](images/generateIJ.png?raw=true "Generate I and J")
 
+```
 python3 main.py --shuffle
 ```
 ![Shuffle on B to generate I and J](images/shuffle.png?raw=true "Shuffle on B to generate I and J")
