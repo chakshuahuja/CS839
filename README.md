@@ -56,7 +56,7 @@ python3 main.py run
 ```
 This will run on all classifiers namely Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF), Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR)
 
-![Run All](images/runAll.jpg?raw=true "Run All")
+![Run All](images/runAll.png?raw=true "Run All")
 
 However, if you want to try running on any of those, you may run
 ```
