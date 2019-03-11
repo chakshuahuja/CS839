@@ -54,7 +54,7 @@ python3 main.py --shuffle
 ```
 python3 main.py run
 ```
-This will run on all classifiers namely Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF), Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR)
+This will run on all classifiers namely Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF), Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR) with training set I and testing set J
 
 ![Run All](images/runAll.png?raw=true "Run All")
 
