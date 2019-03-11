@@ -1,12 +1,12 @@
 # CS839
 
-All Documents: [Set B](https://github.com/chakshuahuja/CS839/tree/master/B)
+All Documents: [Set B](https://github.com/swatianand56/CS839/tree/master/Stage_1/B)
 
-Training Documents: [Set I](https://github.com/chakshuahuja/CS839/tree/master/I)
+Training Documents: [Set I](https://github.com/swatianand56/CS839/tree/master/Stage_1/I)
 
-Testing Documents: [Set J](https://github.com/chakshuahuja/CS839/tree/master/J)
+Testing Documents: [Set J](https://github.com/swatianand56/CS839/tree/master/Stage_1/J)
 
-[Code](https://github.com/chakshuahuja/CS839)
+[Code](https://github.com/swatianand56/CS839/tree/master/Stage_1)
 
 ### Setup:
 Install the requirements mentioned in `requirements.txt` (`docopt`, `pandas` and `sklearn`)
@@ -48,8 +48,8 @@ Options:
 python3 main.py
 ```
 This only generates `train.csv` and `test.csv` files containing the feature vectors of training and testing data.
-Note: The training data is generated from train files (101-300 in folder [I](https://github.com/chakshuahuja/CS839/tree/master/I)) and testing data is generated from
-test files (1-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/master/J))
+Note: The training data is generated from train files (101-300 in folder [I](https://github.com/swatianand56/CS839/tree/master/Stage_1/I)) and testing data is generated from
+test files (1-100 in folder [J](https://github.com/swatianand56/CS839/tree/master/Stage_1/J))
 
 ![Generate I and J](images/generateIJ.png?raw=true "Generate I and J")
 
