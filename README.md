@@ -68,5 +68,5 @@ where `<classifiers>` can be written as "NN, DT" or any classifiers you choose t
 ```
 python3 main.py run "NN" --kfold
 ```
-![Neural Network K-Fold on I](images/NNKfold.jpg?raw=true "Neural Network K-Fold on I")
+![Neural Network K-Fold on I](images/NNKfold.png?raw=true "Neural Network K-Fold on I")
 
