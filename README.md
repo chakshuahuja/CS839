@@ -16,7 +16,7 @@ CS839 (Stage 1) API
 Usage:
     main.py [--shuffle]
     main.py -h | --help
-    main.py run [<classifiers>] [--shuffle] [--kfold]
+    main.py run [<classifiers>] [--kfold]
 
 Options:
     -h --help     : Generates test and train data for files from 1-200 and 201-300 by default.
