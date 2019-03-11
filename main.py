@@ -1,13 +1,19 @@
-"""TOKENIZER CLI
+"""CS839 (Stage 1) API
 
 Usage:
     main.py [--shuffle]
     main.py -h | --help
-    main.py run [<classifiers>] [--shuffle]
+    main.py run [<classifiers>] [--shuffle] [--kfold]
 
 Options:
-    -h --help  : Generates test and train data for files from 1-200 and 201-300 by default.
-    --shuffle  : Generates test and train data by randomly choosing 100 files and 200 files.
+    -h --help     : Generates test and train data for files from 1-200 and 201-300 by default.
+                    Classifiers -
+                    Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF)
+                    Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR)
+
+    --shuffle     : Generates test and train data by randomly choosing 100 files and 200 files.
+    --kfold       : Run Cross Validation
+    <classifiers> : Classifiers on which you wish to run (DT, SVM, RF, NN, LOR, LR)
 
 """
 
@@ -133,15 +139,15 @@ def main(docopt_args):
 			Generating train and test data by choosing random 200 files for training and 100 files for testing
 			from folder B (containing all 300 files).
 		""")
-		generateShuffledData()
+		#generateShuffledData()
 	else:
 		print("""
 			Generating train data from files indexed 101-300 (in folder I) and
 			test data from files indexed 1-100 (in folder J).
 		""")
-		generateFixedData()
+		#generateFixedData()
 
-	if docopt_args["run"]:
+	if docopt_args["run"] and not docopt_args["--kfold"]:
 		classifiers_args = docopt_args.get("<classifiers>")
 		classifiers = [c.strip() for c in classifiers_args.split(',')] if classifiers_args else ["NN", "RF", "SVM", "DT", "LOR", "LR"]
 
@@ -151,6 +157,19 @@ def main(docopt_args):
 		print()
 		for classifier in classifiers:
 			clf.run(classifier)
+
+	if docopt_args["run"] and docopt_args["--kfold"]:
+		classifiers_args = docopt_args.get("<classifiers>")
+		classifiers = [c.strip() for c in classifiers_args.split(',')] if classifiers_args else ["NN", "RF", "SVM", "DT", "LOR", "LR"]
+
+		clf = Classifiers("train.csv", "test.csv")
+		print()
+		print('Running K Fold (10-fold cross validation)')
+		print("{0: <20} {1} {2}".format("Classifer", "Precision", "Recall"))
+		print()
+		for classifier in classifiers:
+			clf.run_kfold(classifier)
+			print()
 
 if __name__ == "__main__":
 	args = docopt(__doc__)

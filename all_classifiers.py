@@ -12,12 +12,12 @@ from sklearn.model_selection import StratifiedKFold
 
 
 CLF = {
-	"DT" : {"name": "Decision Tree"},
-	"RF" : {"name": "Random Forest"},
-	"SVM" : {"name": "Support Vector"},
-	"LR" : {"name": "Linear Regression"},
-	"LOR" : {"name": "Logistic Regression"},
-	"NN" : {"name": "Neural Network"}
+	"DT" : {"name": "Decision Tree", "precision": [], "recall": []},
+	"RF" : {"name": "Random Forest", "precision": [], "recall": []},
+	"SVM" : {"name": "Support Vector", "precision": [], "recall": []},
+	"LR" : {"name": "Linear Regression", "precision": [], "recall": []},
+	"LOR" : {"name": "Logistic Regression", "precision": [], "recall": []},
+	"NN" : {"name": "Neural Network", "precision": [], "recall": []}
 }
 
 class Classifiers:
@@ -81,16 +81,12 @@ class Classifiers:
 		print("{classifier: <20} {precision:.5f} {recall:.5f}".format(classifier=CLF[clf]["name"], precision=result[0], recall=result[1]))
 
 	def run_kfold(self, classifier):
-		print('Running K Fold')
-		skf = StratifiedKFold(n_splits=2)
+		N = 10
+		skf = StratifiedKFold(n_splits=N)
 		X_numpy = self.X_train.values
 		y_numpy = self.y_train.values
 
-		total_precision = 0
-		total_recall = 0
-
 		for train_index, test_index in skf.split(X_numpy, y_numpy):
-			# print(train_index, test_index)
 			Xtr, Xts = X_numpy[train_index], X_numpy[test_index]
 			ytr, yts = y_numpy[train_index], y_numpy[test_index]
 			Xtr = pd.DataFrame(Xtr)
@@ -98,22 +94,19 @@ class Classifiers:
 			ytr = pd.DataFrame(ytr)
 			yts = pd.DataFrame(yts)
 
-			if classifier == DT: self.print_results(DT, self.decision_tree(Xtr, Xts, ytr, yts))
-			if classifier == SVM: self.print_results(SVM, self.support_vector(Xtr, Xts, ytr, yts))
-			if classifier == RF: self.print_results(RF, self.random_forest(Xtr, Xts, ytr, yts))
-			if classifier == NN:
-				res = self.neural_network(Xtr, Xts, ytr, yts)
-				total_precision += res[0]
-				total_recall += res[1]
-				self.print_results(NN, res)
-			if classifier == LR: self.print_results(LR, self.linear_regression(Xtr, Xts, ytr, yts))
-			if classifier == LOR:
-				res = self.logistic_regression(Xtr, Xts, ytr, yts)
-				total_precision += res[0]
-				total_recall += res[1]
-				self.print_results(LOR, res)
+			if classifier == "DT": res = self.decision_tree(Xtr, Xts, ytr, yts)
+			if classifier == "SVM": res = self.support_vector(Xtr, Xts, ytr, yts)
+			if classifier == "RF": res = self.random_forest(Xtr, Xts, ytr, yts)
+			if classifier == "NN": res = self.neural_network(Xtr, Xts, ytr, yts)
+			if classifier == "LR": res = self.linear_regression(Xtr, Xts, ytr, yts)
+			if classifier == "LOR": res = self.logistic_regression(Xtr, Xts, ytr, yts)
 
-		print(total_precision/10, total_recall/10)
+			CLF[classifier]["precision"].append(res[0])
+			CLF[classifier]["recall"].append(res[1])
+
+		[self.print_results(classifier, [p, r]) for p, r in zip(CLF[classifier]["precision"], CLF[classifier]["recall"])]
+		print()
+		self.print_results(classifier, [sum(CLF[classifier]["precision"])/N, sum(CLF[classifier]["recall"])/N])
 
 	def run(self, classifier):
 		if classifier == "DT": self.print_results("DT", self.decision_tree(self.X_train, self.X_test, self.y_train, self.y_test))
@@ -122,10 +115,3 @@ class Classifiers:
 		if classifier == "NN": self.print_results("NN", self.neural_network(self.X_train, self.X_test, self.y_train, self.y_test))
 		if classifier == "LR": self.print_results("LR", self.linear_regression(self.X_train, self.X_test, self.y_train, self.y_test))
 		if classifier == "LOR": self.print_results("LOR", self.logistic_regression(self.X_train, self.X_test, self.y_train, self.y_test))
-
-
-clf = Classifiers("train.csv", "test.csv")
-print("{0: <20} {1} {2}".format("Classifer", "Precision", "Recall"))
-print()
-for classifier in ["NN"]:
-	clf.run(classifier)
