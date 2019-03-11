@@ -40,16 +40,19 @@ test files (1-100 in folder [J](https://github.com/chakshuahuja/CS839/tree/maste
 
 ###### (Optional) Generating the training and test data feature vector if you want to generate the train and test by randomly choosing 200/100 train/test files rather than fixed from I and J):
 ```
+
+![Generate I and J](images/generateIJ.png?raw=true "Generate I and J")
+
 python3 main.py --shuffle
 ```
 ![Shuffle on B to generate I and J](images/shuffle.png?raw=true "Shuffle on B to generate I and J")
 
 
-#### Generating and Running the result on the classifiers
+#### Running the result on the classifiers
 ```
 python3 main.py run
 ```
-This will generate the train and test data from I and J and run on all classifiers namely Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF), Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR)
+This will run on all classifiers namely Decision Tree(DT), Support Vector Machine (SVM), Random Forest (RF), Neural Netword (NN), Logistic Regression (LOR), Linear Regresssion (LR)
 
 However, if you want to try running on any of those, you may run
 ```

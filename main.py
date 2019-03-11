@@ -3,7 +3,7 @@
 Usage:
     main.py [--shuffle]
     main.py -h | --help
-    main.py run [<classifiers>] [--shuffle] [--kfold]
+    main.py run [<classifiers>] [--kfold]
 
 Options:
     -h --help     : Generates test and train data for files from 1-200 and 201-300 by default.
@@ -133,19 +133,20 @@ def generateFixedData():
 	test_df.to_csv("test.csv")
 
 def main(docopt_args):
-	if docopt_args["--shuffle"]:
-		print("""
-			Shuffle has been set.
-			Generating train and test data by choosing random 200 files for training and 100 files for testing
-			from folder B (containing all 300 files).
-		""")
-		generateShuffledData()
-	else:
-		print("""
-			Generating train data from files indexed 101-300 (in folder I) and
-			test data from files indexed 1-100 (in folder J).
-		""")
-		generateFixedData()
+	if not docopt_args["run"]:
+		if docopt_args["--shuffle"]:
+			print("""
+				Shuffle has been set.
+				Generating train and test data by choosing random 200 files for training and 100 files for testing
+				from folder B (containing all 300 files).
+			""")
+			generateShuffledData()
+		else:
+			print("""
+				Generating train data from files indexed 101-300 (in folder I) and
+				test data from files indexed 1-100 (in folder J).
+			""")
+			generateFixedData()
 
 	if docopt_args["run"] and not docopt_args["--kfold"]:
 		classifiers_args = docopt_args.get("<classifiers>")
