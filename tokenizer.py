@@ -95,8 +95,6 @@ def test(data):
 
 		if token_vector['position'] in all_indices:
 			feature_val = int(isStartOfSentence(token_vector['position'], text))
-		# else:
-		# 	print('ALL INDICES', '--' + token_vector['token'] + '--' , all_indices, token_vector['fid'])
 
 		if vector_val != feature_val:
 			# print(token_vector['token'], vector_val, feature_val, token_vector['position'])
@@ -207,7 +205,7 @@ class Tokenizer:
 
 			if tlabel == 1: pos += 1
 			else: neg += 1
-			# print(token_vector)
+
 			data.append(token_vector)
 
 		return data, pos, neg
