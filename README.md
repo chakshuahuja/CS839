@@ -12,6 +12,8 @@ Testing Documents: [Set J](https://github.com/chakshuahuja/CS839/tree/master/J)
 Install the requirements mentioned in `requirements.txt` (`docopt`, `pandas` and `sklearn`)
 or you have `pip` setup, you may do `pip install --user -r requirements.txt`
 
+Make sure you have `python 3` setup
+
 In order to run the code,
 ```
 ./run.sh
