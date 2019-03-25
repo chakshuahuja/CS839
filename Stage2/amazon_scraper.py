@@ -6,6 +6,7 @@ class AmazonScraper:
     def __init__(self):
         self.driver = webdriver.Firefox()
         self.books = {}
+        self.write_header_to_csv()
 
     def extract_first_page_books(self):
         for book in self.driver.find_elements_by_xpath("//div[@id='mainResults']/ul/li"):
@@ -46,6 +47,34 @@ class AmazonScraper:
             except:
                 self.driver.quit()
         
+    def get_books_additional_data(self):
+
+        for book in self.books:
+            self.driver.get(book)
+            self.driver.implicitly_wait(5)
+            details = self.driver.find_element_by_xpath("//table[@id='productDetailsTable']")
+
+            for detail in details.text.split('\n'):
+                if ':' in detail:
+                    k, v = detail.split(':')
+                    self.books[book][k.strip()] = v.strip()
+
+            # Write to CSV with pre-filled for missing fields
+            kv = self.defaults.copy()
+            kv.update(self.books[book])
+            with open('amazon_books.csv', mode='a') as csv_file:
+                self.writer = csv.DictWriter(csv_file, fieldnames=self.field_names, extrasaction='ignore')
+                self.writer.writerow(kv)
+
+
+    def write_header_to_csv(self):
+        self.field_names = ['title', 'author', 'link', 'Hardcover', 'Paperback', 'Publisher', 'Language', 'ISBN-10', 'ISBN-13', 'Product Dimensions', 'Shipping Weight', 'Average Customer Review', 'Amazon Best Sellers Rank', 'ASIN']
+        self.defaults = {k:'N/A' for k in self.field_names}
+
+        with open('amazon_books.csv', mode='w') as csv_file:
+            self.writer = csv.DictWriter(csv_file, fieldnames=self.field_names)
+            self.writer.writeheader()
+
     def write_to_csv(self):
         with open('amazon_books.csv', mode='w') as csv_file:
             field_names = ['title', 'author', 'link']
@@ -58,5 +87,6 @@ class AmazonScraper:
         self.driver.quit()
 
 AS = AmazonScraper()
-AS.get_books_data(5)
-AS.write_to_csv()
+AS.get_books_data(3)
+# AS.write_to_csv()
+AS.get_books_additional_data()
