@@ -1,6 +1,7 @@
 from selenium import webdriver
 import time
 import csv
+import re
 
 class AmazonScraper:
     def __init__(self):
@@ -51,8 +52,8 @@ class AmazonScraper:
     def get_books_data(self, till_page=3):
         categroy_ids = {
             'History' : '9',
-            'Mystery' : '18',
-            'Literary' : '17'
+           'Mystery' : '18',
+           'Literary' : '17'
         }
 
         for topic in categroy_ids:
@@ -78,6 +79,7 @@ class AmazonScraper:
     def get_books_additional_data(self):
 
         for book in self.books:
+
             print('Extracting from book '+ str(self.books[book]['counter']) + ': ', self.books[book]['title'])
             self.driver.get(book)
             self.driver.implicitly_wait(5)
@@ -86,8 +88,39 @@ class AmazonScraper:
             for detail in details.text.split('\n'):
                 if ':' in detail:
                     k, v = detail.split(':', 1)
-                    if k == "Average Customer Review": continue
-                    self.books[book][k.strip()] = v.strip()
+                    if k in ["Paperback", "Hardcover"]:
+                        self.books[book]["pages"] = v.strip('pages').strip()
+                        continue
+                    elif k == "Publisher":
+                        res = re.search('(.*)(\(.*\)).*', v)
+                        if res:
+                            self.books[book]["publisher"] = res.group(1).strip()
+                            self.books[book]["publication_date"] = res.group(2).strip('()').strip()
+                        continue
+                    elif k == "Average Customer Review": continue
+                    else: self.books[book][k.strip()] = v.strip()
+
+            # Find the most famous book format and price
+            try:
+                books = self.driver.find_element_by_xpath("//div[@id='tmmSwatches']/ul")
+                selected_book = books.find_element_by_class_name("a-button-selected").text
+            except:
+                try:
+                    books = self.driver.find_element_by_xpath("//div[@id='mediaTabsHeadings']/ul")
+                    selected_book = books.find_element_by_class_name("a-active").text
+                except: continue
+            self.books[book]['book_format'], self.books[book]['curr_price'] = selected_book.split('\n', 1)
+
+            # Find old price
+            try: book_group = self.driver.find_element_by_xpath("//div[@id='buyBoxInner']")
+            except: book_group = self.driver.find_element_by_xpath("//div[@id='mediaNoAccordion']")
+
+            try:
+                old_price_element = book_group.find_element_by_class_name("a-text-strike")
+                if old_price_element: self.books[book]['old_price'] = old_price_element.text
+            except:
+                self.books[book]['old_price'] = self.books[book]['curr_price']
+                continue
 
             # Write to CSV with pre-filled for missing fields
             kv = self.defaults.copy()
@@ -98,7 +131,7 @@ class AmazonScraper:
 
 
     def write_header_to_csv(self):
-        self.field_names = ['counter', 'title', 'author', 'link', 'Hardcover', 'Paperback', 'Publisher', 'Language', 'ISBN-10', 'ISBN-13', 'Product Dimensions', 'Shipping Weight', 'Amazon Best Sellers Rank', 'ASIN']
+        self.field_names = ['counter', 'title', 'author', 'book_format', 'old_price', 'curr_price', 'pages', 'publisher', 'publication_date', 'Language', 'ISBN-10', 'ISBN-13', 'Product Dimensions', 'Shipping Weight', 'Amazon Best Sellers Rank', 'ASIN', 'link']
         self.defaults = {k:'N/A' for k in self.field_names}
 
         with open('amazon_books.csv', mode='w') as csv_file:
