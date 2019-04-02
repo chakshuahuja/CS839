@@ -12,17 +12,17 @@ class AmazonScraper:
         self.field_names = ['title', 'author', 'book_format', 'old_price', 'curr_price', 'pages', 'publisher', 'publication_date', 'Language', 'ISBN-10', 'ISBN-13', 'Product Dimensions', 'Shipping Weight', 'Amazon Best Sellers Rank', 'ASIN', 'link']
         self.defaults = {k:'N/A' for k in self.field_names}
 
-        # self.write_header_to_csv()
+        self.write_header_to_csv()
 
         self.already_done = {}
-        with open('amazon_books_2375.csv') as csv_file:
+        with open('amazon_books.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             books = list(csv_reader)
             header = books[0]
             for row in books[1:]:
                 link = row[-1]
-                print(link)
                 self.already_done[link] = {h: v for h, v in zip(header, row)}
+            print(len(self.already_done))
 
     def extract_first_page_books(self):
         curr_page_books = {}
@@ -66,6 +66,9 @@ class AmazonScraper:
    
     def get_books_data(self, till_page=3):
         categroy_ids = {
+            'Arts' : '1'
+            'Biographies' : '2'
+            'Sports' : '26'
             'History' : '9',
             'Mystery' : '18',
             'Literary' : '17',
