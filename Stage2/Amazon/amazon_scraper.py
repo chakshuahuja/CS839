@@ -66,9 +66,9 @@ class AmazonScraper:
    
     def get_books_data(self, till_page=3):
         categroy_ids = {
-            'Arts' : '1'
-            'Biographies' : '2'
-            'Sports' : '26'
+            'Arts' : '1',
+            'Biographies' : '2',
+            'Sports' : '26',
             'History' : '9',
             'Mystery' : '18',
             'Literary' : '17',
