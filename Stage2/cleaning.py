@@ -29,12 +29,31 @@ def changeDateFormat(df):
 		newDF = newDF.append(row, ignore_index = True)
 	return newDF
 
+def changeDimensionFormat(df):
+	newDF = pd.DataFrame()
+	for i in range(0, len(df)):
+		row = df.iloc[i]
+		dimension = row["product_dimensions"]
+		if type(dimension) == type("abc"):
+			dimension = dimension.replace("inches", "");
+			dimension = dimension.split("x")
+			if len(dimension) == 3:
+				newDimension = str(dimension[0]).strip() + "(w) x " + str(dimension[2]).strip() + "(h) x " + str(dimension[1]).strip() + "(d)"
+			elif len(dimension) == 2:
+				newDimension = str(dimension[0]).strip() + "(w) x " + str(dimension[1]).strip() + "(h)"
+		else:
+			newDimension = ""
+		row["product_dimensions"] = newDimension
+		newDF = newDF.append(row, ignore_index = True)
+	return newDF
+
 
 
 def main():
 	amazon = pd.read_csv(Amazon)
 	amazon = cleanISBN(amazon)
 	amazon = changeDateFormat(amazon)
+	amazon = changeDimensionFormat(amazon)
 	amazon.to_csv('Amazon/cleaned.csv')
 
 main()
