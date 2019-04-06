@@ -9,7 +9,7 @@
 
 Setup:
 
-Make sure you have `Firefox` browser installed for `selenium` to run and have `geckdriver` installed (In case you need do, `brew install geckodriver`).
+Make sure you have `Firefox` browser installed for `selenium` to run and have `geckodriver` installed (In case you need do, `brew install geckodriver`).
 
 Install the requirements mentioned in requirements.txt (selenium, geckodriver) or if you have pip setup, you may do pip install --user -r requirements.txt
 
