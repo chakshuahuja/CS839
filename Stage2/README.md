@@ -7,6 +7,9 @@
 - [CSV](https://github.com/chakshuahuja/CS839/blob/master/Stage2/barnesAndNoble/barnesAndNoble-final.csv)
 - [Code](https://github.com/chakshuahuja/CS839/tree/master/Stage2/barnesAndNoble)
 
+### Report
+- [PDF](https://github.com/chakshuahuja/CS839/blob/master/Stage2/report.pdf)
+
 Setup:
 
 Make sure you have `Firefox` browser installed for `selenium` to run and have `geckodriver` installed (In case you need do, `brew install geckodriver`).
