@@ -4,7 +4,7 @@
 - [CSV](https://github.com/chakshuahuja/CS839/blob/master/Stage2/Amazon/amazon_books.csv)
 - [Code](https://github.com/chakshuahuja/CS839/tree/master/Stage2/Amazon)
 ### Barnes & Noble
-- [CSV](https://github.com/chakshuahuja/CS839/blob/master/Stage2/barnesAndNoble/barnesAndNoble-final.csv)
+- [CSV](https://github.com/chakshuahuja/CS839/blob/master/Stage2/barnesAndNoble/barnes_and_noble_books.csv)
 - [Code](https://github.com/chakshuahuja/CS839/tree/master/Stage2/barnesAndNoble)
 
 ### Report
@@ -22,7 +22,7 @@ To run Amazon crawler,
 
 ./amazon.sh
 
-A CSV file named <b>amazon_book.csv</b> will be formed in the amazon sub-directory.
+A CSV file named <b>amazon_books.csv</b> will be formed in the amazon sub-directory.
 
 To run Barnes&Noble crawler,
 
