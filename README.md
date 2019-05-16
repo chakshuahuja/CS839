@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <body style="margin:25px;">
+  <h2>Data Science: Principles, Algorithms, and Applications</h1>
   <h2>Team Members</h2>
   <ul>
     <li>Chakshu Ahuja - <a href="mailto:cahuja2@wisc.edu">cahuja2@wisc.edu</a></li>
